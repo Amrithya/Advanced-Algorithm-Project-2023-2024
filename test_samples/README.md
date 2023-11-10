@@ -1,0 +1,1 @@
+This directory is going to have a set of test examples to test our algorithms at the end of the project.
