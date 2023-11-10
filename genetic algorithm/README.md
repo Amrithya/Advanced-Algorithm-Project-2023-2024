@@ -18,12 +18,12 @@ To execute the genetic algorithm and observe its performance on different test c
 
 1. Open a terminal or command prompt.
 2. Navigate to the project directory.
-3. "Execute" python genetic_algorithm.py
+3. "Execute" python genetic.py
 
 
 ## Usage
 
-This addition explains how to run the genetic algorithm script (`genetic_algorithm.py`) for the current set of test cases and hints at the upcoming feature of running all tests using the `main.py` script.
+This addition explains how to run the genetic algorithm script (`genetic.py`) for the current set of test cases and hints at the upcoming feature of running all tests using the `main.py` script.
 
 
 
