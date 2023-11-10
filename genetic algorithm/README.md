@@ -1,9 +1,49 @@
 # Advanced-Algorithm-Project-2023-2024
 This repository is dedicated to solving the Matrix Maximum Segment Problem in a 2-dimensional scenario, commonly known as the Maximum Subarray Problem. Our primary objective is to implement various algorithms for this task and provide a comprehensive experimental analysis of their runtime performance and the quality of results. Explore this repository to access the code, documentation, and data related to our research and implementations.
 
-# Matrix Maximum Segment Problem - Genetic Algorithm
+# Matrix Maximum Segment Sum Problem in 2D Arrays - Genetic Algorithm
 
 This repository contains Python code for solving the Matrix Maximum Segment Problem in a 2-dimensional scenario using a genetic algorithm. The primary goal is to find the submatrix with the maximum sum of elements.
+
+### Problem Description
+The problem at hand involves finding the contiguous segment with the largest sum within a given two-dimensional array A of size MxN.
+
+### Genetic Algorithm Approach
+The genetic algorithm implemented in this project aims to address the Maximum Segment Sum problem in 2D arrays. The formulation is as follows:
+
+### 1.1 Problem Description
+
+#### 1.1.1 Formulation
+Given a 2-D array A of size MxN with integers, the task is to find the indices i1, i2, j1, j2 
+where 1 <= i1 <= i2 <= M, 1 <= j1 <= j2 <= N such that the sum of the submatrix 
+A[x, y] for i1 <= x <= i2, j1 <= y <= j2 is as large as possible.
+
+#### 1.1.2 Constraints
+- The array A has dimensions MxN.
+- The indices must satisfy 1 <= i1 <= i2 <= M, 1 <= j1 <= j2 <= N.
+- The submatrix size is constrained by i2 - i1 + 1 = K and j2 - j1 + 1 = L.
+  
+Such that the sum Σ_{x=i1}^{i2} Σ_{y=j1}^{j2} A[x, y] is as large as possible. In simple terms, find the subarray of size KxL with the maximum sum possible.
+
+#### Example
+For the 2-D array A, the goal is to identify the maximum contiguous segment with the largest sum.
+
+
+
+#### Genetic Algorithm Execution
+The genetic algorithm is employed to iteratively search for a combination of indices that maximizes the sum of the submatrix within the given constraints. Here's a brief overview of the algorithm's workflow:
+
+1. **Initialization**: Random programs (candidate solutions) are generated, each representing a potential submatrix with specific indices.
+
+2. **Fitness Evaluation**: The fitness of each program is assessed by calculating the sum of the corresponding submatrix.
+
+3. **Selection**: Programs with higher fitness are favored for the next generation. This mimics the survival of the fittest principle.
+
+4. **Recombination and Mutation**: Pairs of programs are combined through recombination, and slight modifications are introduced through mutation to explore the solution space.
+
+5. **Repeat**: Steps 2-4 are repeated for multiple generations to refine the solutions.
+
+6. **Result**: The algorithm converges to a solution, providing the indices `i_1, i_2, j_1, j_2` that yield the maximum segment sum.
 
 ## Overview
 
@@ -23,11 +63,11 @@ To execute the genetic algorithm and observe its performance on different test c
 
 ## Usage
 
-This addition explains how to run the genetic algorithm script (`genetic.py`) for the current set of test cases and hints at the upcoming feature of running all tests using the `main.py` script.
-
+To observe the algorithm in action and assess its performance, run the genetic algorithm script (`genetic.py`). The script currently includes various test cases, each representing different scenarios for the 2D array.This addition explains how to run the genetic algorithm script (`genetic.py`) for the current set of test casesa and stay tuned for further updates, as all test cases will soon be integrated into the `main.py` script for a more comprehensive evaluation of the algorithm's capabilities.
 
 
 ## Test Cases
+
 
 The genetic algorithm is tested on a variety of 2-dimensional matrices. Each test case is represented as a Python dictionary in the `tests` list in the `main.py` script. Here's an explanation of the test cases:
 
@@ -164,4 +204,3 @@ Description: A larger matrix to test the algorithm's scalability.
  ]
  
  Description: A matrix with all positive values, used to test the algorithm's behavior in a uniform positive scenario.
-
