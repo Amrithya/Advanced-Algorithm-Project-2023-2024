@@ -131,6 +131,36 @@ def genetic_algorithm(matrix, K, L, population_size=20, num_generations=100):
 
     return best_individual
 
+#Dynamic Programming
+def dynamic_programming(matrix, k, l):
+    """
+    Dynamic Programming algorithm to find the maximum segment sum in a 2D matrix with size constraints.
+
+    Parameters:
+    - matrix (numpy.ndarray): The 2D matrix for which the maximum segment sum is to be found.
+    - k (int): Constraint for the number of rows in the submatrix.
+    - l (int): Constraint for the number of columns in the submatrix.
+
+    Returns:
+    - tuple: A tuple representing the best solution found, i.e., (i1, i2, j1, j2).
+    """
+    rows, cols = matrix.shape
+    best_solution = None
+    best_score = float('-inf')
+
+    for i1 in range(rows - k + 1):
+        for i2 in range(i1 + k, rows + 1):
+            for j1 in range(cols - l + 1):
+                for j2 in range(j1 + l, cols + 1):
+                    current_solution = (i1, i2 - 1, j1, j2 - 1)
+                    current_score = evaluate_solution(current_solution, matrix)
+
+                    if current_score > best_score:
+                        best_solution = current_solution
+                        best_score = current_score
+
+    return best_solution
+
 def evaluate_solution(solution, matrix):
     """
     Evaluate the sum of elements in the submatrix defined by the given solution.
@@ -145,6 +175,7 @@ def evaluate_solution(solution, matrix):
     i1, i2, j1, j2 = solution
     submatrix = matrix[i1:i2 + 1, j1:j2 + 1]
     return np.sum(submatrix)
+
 
 def main():
     # Define the list of test cases
@@ -233,6 +264,40 @@ def main():
         plt.annotate(f'Max Sum: {max_sum_greedy}', xy=(0.5, 0.5), xytext=(30, 10),
                      textcoords='offset points', color='white', fontsize=12, bbox=dict(facecolor='black', alpha=0.7))
         plt.show()
+        # Apply the Dynamic Programming Algorithm with size constraints
+        start_time_dp = time.time()
+        i1_dp, i2_dp, j1_dp, j2_dp = dynamic_programming(matrix, k, l)
+        end_time_dp = time.time()
+
+        max_sum_dp = matrix[i1_dp:i2_dp + 1, j1_dp:j2_dp + 1].sum()
+        execution_time_dp = end_time_dp - start_time_dp
+
+        # Print the results for Dynamic Programming Algorithm
+        print("Dynamic Programming Algorithm:")
+        print(f"Matrix:")
+        print(matrix)
+        print(f"Maximum Segment Sum: {max_sum_dp}")
+        print(f"Indices (i1, i2, j1, j2): ({i1_dp}, {i2_dp}, {j1_dp}, {j2_dp})")
+        print(f"Execution Time: {execution_time_dp} seconds")
+        print("=" * 30)
+
+        # Plot the matrix for Dynamic Programming Algorithm
+        plt.xlabel('Algorithms')
+        plt.ylabel('Maximum Segment Sum')
+        plt.imshow(matrix, cmap='viridis')
+        plt.title(f'Original Matrix\nMaximum Segment Sum: {max_sum_dp}')
+        plt.colorbar()
+        plt.show()
+
+        # Plot the selected submatrix for Dynamic Programming Algorithm
+        plt.imshow(matrix[i1_dp:i2_dp + 1, j1_dp:j2_dp + 1], cmap='viridis')
+        plt.title('Selected Submatrix (Dynamic Programming Algorithm)')
+        plt.colorbar()
+        # Annotate the plot with Maximum Segment Sum
+        plt.annotate(f'Max Sum: {max_sum_dp}', xy=(0.5, 0.5), xytext=(30, 10),
+                     textcoords='offset points', color='white', fontsize=12, bbox=dict(facecolor='black', alpha=0.7))
+        plt.show()
+
 # Call the main function
 if __name__ == "__main__":
     main()
