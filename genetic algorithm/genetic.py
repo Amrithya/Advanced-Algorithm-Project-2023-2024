@@ -1,12 +1,34 @@
-import numpy as np  # Importing the numpy library as 'np' for efficient numerical operations.
-import random  # Importing the 'random' module to generate random numbers.
-import time  # Importing the 'time' module to measure execution time.
-import matplotlib.pyplot as plt  # Importing the 'matplotlib.pyplot' module for data visualization.
+import numpy as np
+import random
+import time
+import matplotlib.pyplot as plt
 
 # Genetic Algorithms
 def max_segment_2d_genetic(matrix, population_size=100, num_generations=100):
-    # Function to generate a random program (candidate solution)
+    """
+    Maximizes the sum of a submatrix in a 2D array using a genetic algorithm.
+
+    Parameters:
+    - matrix (numpy.ndarray): The input 2D array.
+    - population_size (int): The size of the population in each generation.
+    - num_generations (int): The number of generations for the genetic algorithm.
+
+    Returns:
+    - tuple: The indices (i1, i2, j1, j2) representing the submatrix with the maximum sum.
+    """
+    # Function to generate a random program (candidate solution) respecting the constraints
     def generate_program(matrix):
+        """
+        Generates a random program (submatrix indices) respecting the constraints.
+
+        Parameters:
+        - matrix (numpy.ndarray): The input 2D array.
+        - rows (int): The number of rows in the matrix.
+        - cols (int): The number of columns in the matrix.
+
+        Returns:
+        - tuple: The indices (i1, i2, j1, j2) representing the generated program.
+        """
         rows, cols = matrix.shape
         i1 = random.randint(0, rows - 1)
         i2 = random.randint(i1, rows - 1)
@@ -14,34 +36,72 @@ def max_segment_2d_genetic(matrix, population_size=100, num_generations=100):
         j2 = random.randint(j1, cols - 1)
         return i1, i2, j1, j2
 
-    # Function to evaluate the fitness of a program
+    # Function to evaluate the fitness of a program respecting the constraints
     def fitness(program, matrix):
+        """
+        Evaluates the fitness (sum of submatrix) of a program respecting the constraints.
+
+        Parameters:
+        - program (tuple): The indices (i1, i2, j1, j2) of the program.
+        - matrix (numpy.ndarray): The input 2D array.
+
+        Returns:
+        - int: The fitness value (sum of elements in the submatrix).
+        """
         i1, i2, j1, j2 = program
         submatrix = matrix[i1:i2 + 1, j1:j2 + 1]
         return np.sum(submatrix)
 
-    # Function to recombine two programs
+    # Function to recombine two programs respecting the constraints
     def recombine(program1, program2):
-        i1 = (program1[0] + program2[0]) // 2
-        i2 = (program1[1] + program2[1]) // 2
-        j1 = (program1[2] + program2[2]) // 2
-        j2 = (program1[3] + program2[3]) // 2
-        return i1, i2, j1, j2
+        """
+        Recombines two programs respecting the constraints.
 
-    # Function to mutate a program
-    def mutate(program):
+        Parameters:
+        - program1 (tuple): The indices (i1, i2, j1, j2) of the first program.
+        - program2 (tuple): The indices (i1, i2, j1, j2) of the second program.
+
+        Returns:
+        - tuple: The indices (i1, i2, j1, j2) representing the recombined program.
+        """
+        
+        i1 = max(program1[0], program2[0])
+        i2 = min(program1[1], program2[1])
+        j1 = max(program1[2], program2[2])
+        j2 = min(program1[3], program2[3])
+        
+        # Ensure valid submatrix, otherwise fallback to generating a new program
+        if i1 <= i2 and j1 <= j2:
+            return i1, i2, j1, j2
+        else:
+            return generate_program(matrix)
+
+    # Function to mutate a program respecting the constraints
+    def mutate(program, rows, cols):
+        """
+        Mutates a program respecting the constraints.
+
+        Parameters:
+        - program (tuple): The indices (i1, i2, j1, j2) of the program.
+        - rows (int): The number of rows in the matrix.
+        - cols (int): The number of columns in the matrix.
+        - mutation_probability (float): Probability of mutation for each gene.
+
+        Returns:
+        - tuple: The indices (i1, i2, j1, j2) representing the mutated program.
+        """
         i1, i2, j1, j2 = program
         if random.random() < 0.2:
             i1 = random.randint(0, i2)
         if random.random() < 0.2:
-            i2 = random.randint(i1, i2)
+            i2 = random.randint(i1, rows - 1)
         if random.random() < 0.2:
             j1 = random.randint(0, j2)
         if random.random() < 0.2:
-            j2 = random.randint(j1, j2)
+            j2 = random.randint(j1, cols - 1)
         return i1, i2, j1, j2
 
-    # Initialization of the population with random programs
+    # Initialization of the population with random programs respecting the constraints
     population = [generate_program(matrix) for _ in range(population_size)]
 
     # Main loop for genetic algorithm
@@ -54,7 +114,7 @@ def max_segment_2d_genetic(matrix, population_size=100, num_generations=100):
         while len(new_population) < population_size:
             parent1, parent2 = random.choices(selected_programs, k=2)
             child = recombine(parent1, parent2)
-            child = mutate(child)
+            child = mutate(child, matrix.shape[0], matrix.shape[1])  # Pass rows and cols to mutate
             new_population.append(child)
 
         population = new_population
@@ -64,6 +124,15 @@ def max_segment_2d_genetic(matrix, population_size=100, num_generations=100):
 
 # Function to generate an initial solution (random submatrix)
 def generate_solution(matrix):
+    """
+    Generates a random initial solution (submatrix) respecting the array dimensions.
+
+    Parameters:
+    - matrix (numpy.ndarray): The input 2D array.
+
+    Returns:
+    - tuple: The indices (i1, i2, j1, j2) representing the initial submatrix.
+    """
     rows, cols = matrix.shape
     i1 = random.randint(0, rows - 1)
     i2 = random.randint(i1, rows - 1)
@@ -73,12 +142,25 @@ def generate_solution(matrix):
 
 # Function to evaluate a solution (sum of elements in the submatrix)
 def evaluate_solution(solution, matrix):
+    """
+    Evaluates the sum of elements in a submatrix.
+
+    Parameters:
+    - solution (tuple): The indices (i1, i2, j1, j2) representing the submatrix.
+    - matrix (numpy.ndarray): The input 2D array.
+
+    Returns:
+    - int: The sum of elements in the submatrix.
+    """
     i1, i2, j1, j2 = solution
     submatrix = matrix[i1:i2 + 1, j1:j2 + 1]
     return np.sum(submatrix)
 
 # Main function
 def main():
+    """
+    Executes the genetic algorithm for the Matrix Maximum Segment Problem and visualizes the results.
+    """
   
     # Define the list of test cases
     tests = [
@@ -160,6 +242,13 @@ def main():
             "matrix": [[1, 1], [1, 1], [1, 1], [1, 1]],
         },
     ]
+    # Additional Test Case
+    large_matrix_test = {
+    "matrix": np.random.randint(-100, 100, size=(1000, 1000)),
+    }   
+    # Add the new test case to the list of tests
+    tests.append(large_matrix_test)
+
 
     # Iterate through the test cases
     for test in tests:
@@ -202,5 +291,3 @@ def main():
 # Call the main function
 if __name__ == "__main__":
     main()
-
-
