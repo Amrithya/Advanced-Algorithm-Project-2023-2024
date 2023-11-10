@@ -7,7 +7,7 @@ This repository contains Python code for solving the Matrix Maximum Segment Prob
 
 ## Overview
 
-- `genetic_algorithm.py`: Python script implementing the genetic algorithm.
+- `genetic.py`: Python script implementing the genetic algorithm.
 - `main.py`: Main script upcoming feature applying the genetic algorithm to a list of test cases.
 - `README.md`: This file providing an overview of the project.
 
