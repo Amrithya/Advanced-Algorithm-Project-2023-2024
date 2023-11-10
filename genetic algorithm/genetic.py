@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 def max_segment_2d_genetic(matrix, population_size=100, num_generations=100):
     """
     Maximizes the sum of a submatrix in a 2D array using a genetic algorithm.
-
+   
     Parameters:
     - matrix (numpy.ndarray): The input 2D array.
     - population_size (int): The size of the population in each generation.
@@ -16,6 +16,11 @@ def max_segment_2d_genetic(matrix, population_size=100, num_generations=100):
     Returns:
     - tuple: The indices (i1, i2, j1, j2) representing the submatrix with the maximum sum.
     """
+    # Time Complexity: O(population_size * num_generations * fitness_function_time)
+    # Space Complexity: O(population_size * solution_size)
+    # Quality: The quality of the result depends on the effectiveness of the genetic operators (crossover and mutation).
+    # Running Time: Depends on population_size and num_generations; can be fast for small populations and generations.
+
     # Function to generate a random program (candidate solution) respecting the constraints
     def generate_program(matrix):
         """
