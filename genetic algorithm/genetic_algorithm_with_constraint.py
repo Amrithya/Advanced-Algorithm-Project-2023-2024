@@ -1,4 +1,5 @@
 import random
+random.seed(42)  # Set a random seed for reproducibility
 
 def calculate_subarray_sum(matrix, top, left, K, L):
     """
