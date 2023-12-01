@@ -1,0 +1,76 @@
+
+from brute.helpers import calculate_subarray_sum,print_submatrix
+
+def max_subarray_2d_polynomial(matrix):
+    # Get the number of rows and columns in the matrix
+    rows, cols = len(matrix), len(matrix[0]) 
+    
+    # Initialize variables to store maximum sum and corresponding indices
+    max_sum = float('-inf')
+    top_left = bottom_right = (0, 0) 
+    
+    # print the matrix that we are testing
+    # print('matrix:')
+    # for row in matrix:
+    #     print(row)
+        
+    # Iterate through all possible submatrices
+    for top in range(rows):
+        for left in range(cols): 
+            for bottom in range(top, rows):
+                for right in range(left, cols):
+                    
+                    #debugging 
+                    print(("top= ",top,"left=",left, "bottom=", bottom, "right=",right))
+                    print_submatrix(matrix, top, left, bottom, right)
+                    
+                    # Calculate the sum of the current subarray
+                    current_sum = calculate_subarray_sum(matrix, top, left, bottom, right)
+                    if current_sum > max_sum:
+                        max_sum = current_sum
+                        top_left = (top, left)
+                        bottom_right = (bottom, right)
+                        # print('current_sum = ',current_sum, 'max_sum = ',max_sum, ' top_left = ',top_left, ' bottom_right = ', bottom_right,)
+    # print_submatrix(matrix, top_left[0],top_left[1],bottom_right[0],bottom_right[1])
+    return max_sum, top_left, bottom_right,
+
+
+
+
+
+
+
+
+# BRUTE FORCE CONSTRAINED
+
+def max_subarray_2d_polynomial_constrained(matrix,K,L):
+    rows, cols = len(matrix), len(matrix[0])
+    max_sum = float('-inf')
+    top_left = bottom_right = (0, 0)  # Initialize with the first element
+
+    for i in range(rows):# Loop for top row position in the rectangle   
+        for j in range(cols): # Loop for left column position of the rectangle
+            for k in range(i, rows):# Loop for bottom row in the rectangle
+                for l in range(j, cols):# Loop for right column in the rectangle
+                    # print(("i= ",i,"j=",j, "k=", k, "l=",l))
+                    # print_submatrix(matrix, i, j, k, l)
+                    if (k-i+1 == K and l-j+1 == L):
+                        current_sum = calculate_subarray_sum(matrix, i, j, k, l)
+                    
+                        if current_sum > max_sum:
+                            max_sum = current_sum
+                            top_left = (i, j)
+                            bottom_right = (k, l)
+                        # print('current_sum = ',current_sum, 'max_sum = ',max_sum, ' top_left = ',top_left, ' bottom_right = ', bottom_right,)
+
+    return max_sum, top_left, bottom_right,
+
+
+
+
+
+
+
+
+
+
