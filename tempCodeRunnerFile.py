@@ -1,1 +1,2 @@
-0
+
+# test_algorithm_instance = TestAlgorithm()
