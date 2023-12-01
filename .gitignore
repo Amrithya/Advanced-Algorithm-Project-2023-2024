@@ -4,3 +4,4 @@
 brute/__pycache__/__init__.cpython-311.pyc
 brute/__pycache__/helpers.cpython-311.pyc
 *.pyc
+dynamic_programming/.ipynb_checkpoints/dynamic_programming-checkpoint.py
