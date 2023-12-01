@@ -1,10 +1,11 @@
 import unittest
 import timeit
 from test_samples.samples import tests
+# import numpy as np
 from brute.helpers import print_submatrix,calculate_subarray_sum
 
 class TestAlgorithm(unittest.TestCase):
-    
+    """HELPER FUNCTIONS"""
     # check if its non rectangular
     def is_non_rectangular(self,matrix):
         return any(len(row) != len(matrix[0]) for row in matrix)
@@ -22,7 +23,7 @@ class TestAlgorithm(unittest.TestCase):
         return any(not isinstance(element, (int, float)) for row in matrix for element in row)
     
 
-    def success_procedure(self,i,result,expected_result,top_left,bottom_right,expected_indices,matrix):
+    def print_success_inofrmation(self,i,result,expected_result,top_left,bottom_right,expected_indices,matrix):
         print(f"\nTest Case {i + 1} \033[92msucceeded\033[0m")
         print(f"Result: {result}")
         print(f"Expected Result: {expected_result}")
@@ -37,7 +38,16 @@ class TestAlgorithm(unittest.TestCase):
         print_submatrix(matrix, top_left[0], top_left[1], bottom_right[0], bottom_right[1])
 
 
-        
+    """RUNNING AN ALGORITHM AGAINST ALL CASES
+    
+    this is the test function that takes two inputs (algorithm_funciton, algorithm_name)
+    - it prints all the test cases, the success rate
+    - it returns a size_time list which is a list of tuples containing (running time for each run, elements in the matrix)
+    - it returns number of successful runs
+    - it returns number of failed runs
+    
+    """  
+    
                     
     def run_algorithm_tests(self, algorithm, algorithm_name):
         print(f"\nTESTING {algorithm_name} \n\n================================")
@@ -45,6 +55,7 @@ class TestAlgorithm(unittest.TestCase):
         total_tests = len(tests)
         skipped_tests = 0 # counts invalid tests
         failed_tests = 0 # counts failed tests
+        size_run_time_test = []
         for i, test_sample in enumerate(tests):
             matrix = test_sample["matrix"]
             
@@ -69,11 +80,14 @@ class TestAlgorithm(unittest.TestCase):
                 print(f"\nTest Case {i + 1} skipped: Matrix is non-rectangular.")
                 skipped_tests += 1
                 continue
+            # if it has non numeric values
             if self.has_non_numeric_values(matrix):
                 print(f"\nTest Case {i + 1} skipped: Matrix contains non-numeric values.")
                 skipped_tests += 1
                 continue
-            
+            rows = len(matrix)
+            columns = len(matrix[0])
+            n_elements = rows * columns
             expected_result = test_sample["expected_result"]
             expected_indices = test_sample["subarray_indices"]
           
@@ -91,19 +105,22 @@ class TestAlgorithm(unittest.TestCase):
                     self.assertTupleEqual(top_left, expected_indices[0])
                     self.assertTupleEqual(bottom_right, expected_indices[1])
 
-                    self.success_procedure(i,result,expected_result,top_left,bottom_right,expected_indices,matrix)
+                    self.print_success_inofrmation(i,result,expected_result,top_left,bottom_right,expected_indices,matrix)
                     successful_tests += 1
-
+                    execution_time = end_time - start_time
+                    size_run_time_test.append((execution_time,n_elements))
                     # Print the time taken for the current test
-                    print(f"Time taken: {end_time - start_time:.6f} seconds\n")
+                    print(f"Time taken: {execution_time:.6f} seconds\n")
 
                 except AssertionError as e:
                     ## check if the error was raised because It found a differnet solution not because it failed
                     if result == expected_result:
                         print(f"Algorithm Found a differnet solution than the expected solution but it is the right solution")
-                        self.success_procedure(i,result,expected_result,top_left,bottom_right,expected_indices,matrix)
+                        self.print_success_inofrmation(i,result,expected_result,top_left,bottom_right,expected_indices,matrix)
+                        execution_time = end_time - start_time
+                        size_run_time_test.append(execution_time)
                         successful_tests += 1
-                        print(f"Time taken: {end_time - start_time:.6f} seconds\n")
+                        print(f"Time taken: {execution_time:.6f} seconds\n")
                         continue
 
                     print(f"\nTest Case {i + 1} \033[91mfailed\033[0m: {e}")
@@ -124,6 +141,9 @@ class TestAlgorithm(unittest.TestCase):
         success_percentage = (successful_tests / (total_tests-skipped_tests)) * 100
         print(f"\033[92mSuccess Percentage for {algorithm_name}: {success_percentage:.2f}%\033[0m")
         print(f"\033[92m{successful_tests} Successes\033[0m, \033[91m{failed_tests} Fails\033[0m, \033[93m{skipped_tests} Skipped invalid tests\033[0m")
+        # calculate the average time 
+        
+        return size_run_time_test,successful_tests,failed_tests
 
 if __name__ == '__main__':
     unittest.main()
