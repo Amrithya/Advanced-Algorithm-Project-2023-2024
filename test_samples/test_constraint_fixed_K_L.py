@@ -10,57 +10,60 @@ Original file is located at
 tests = [
     {   "matrix" : None,
         "expected_result": "No matrix",
-        "subarray_indices": "NIL"
+        "subarray_indices": None,
+        "constraints": (2,3)
+	
     },
     {
         "matrix": [1, 2, -1, -4, -20, None],
         "expected_result": "1D matrix",
-        "subarray_indices": "NIL"
+        "subarray_indices": None,
+        "constraints": (2,3)
     },
      {
         "matrix": [[80, -2, -21, -4, -78],[58,98,-9]],
         "expected_result": "Non Rectange matrix",
-        "subarray_indices": "NIL"
+        "subarray_indices": None,
+        "constraints": (2,3)
     },
 
     {
         "matrix": [[80],[]],
         "expected_result": "Non Rectange matrix",
-        "subarray_indices": "NIL"
+        "subarray_indices": "NIL",
+        "constraints": (2,3)
     },
     {
         "matrix": [[1, 1],
                    [1, 1], [1, 1], [1, 1]],
         "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",
         "subarray_indices": None,
+        "constraints": (2,3)
     },
     {
-        "matrix": [[1, 1, 1],
-                   [1, 1, 1], [1, 1, 1], [1, 1, 1]],
-        "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",
-        "subarray_indices": None,
-    },
-
-     {
         "matrix": [[1, 2], [3, 4]],
         "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",
         "subarray_indices": None,
+        "constraints": (2,3)
     },
 
     {
         "matrix": [[-1, -2, -3], [-4, -5, -6], [-7, -8, -9]],
         "expected_result": -21,
         "subarray_indices": [(0, 0), (1, 2)],
+        "constraints": (2,3)
     },
      {
         "matrix": [[-1, -2, -3], [-4, -5, -6], [-7, -8, -9], [-10, -11, -12]],
         "expected_result": -21,
         "subarray_indices": [(0, 0), (1, 2)],
+        "constraints": (2,3)
     },
      {
         "matrix": [[-2, 5, -1, 4], [8, -6, 3, 1], [2, 2, -4, -1], [-3, 2, 6, -1]],
         "expected_result": 7,
         "subarray_indices": [(0, 0), (1, 2)],
+        "constraints": (2,3)
     },
 
     {
@@ -72,6 +75,7 @@ tests = [
         ],
         "expected_result": 14,
         "subarray_indices": [(2, 2), (3, 4)],
+        "constraints": (2,3)
     },
 
     {
@@ -85,6 +89,7 @@ tests = [
 
         "expected_result": 214,
         "subarray_indices": [(5, 2), (6, 4)],
+        "constraints": (2,3)
     },
 
    {
@@ -99,6 +104,7 @@ tests = [
  [ 14,  99, -34,  82,  13,  34,  16, -74,  56, -97,  97,  55,  10,  38,  99]] ,
         "expected_result": 327,
         "subarray_indices": [(5,7),(6,9)], #top left and bottom right indices
+        "constraints": (2,3)
     },
 
     {
@@ -113,6 +119,7 @@ tests = [
  [ 14,  99, -34,  82,  13,  34,  16, -74,  56, -97,  97,  55,  10,  38,  99]] ,
         "expected_result": 333,
         "subarray_indices": [(7,10),(8,12)], #top left and bottom right indices
+        "constraints": (2,3)
     },
 
     {
@@ -128,6 +135,7 @@ tests = [
  [16,  43,  85, -84,  25, -70,  80, -63,  21, -71,  20, -24,  42,  29, -38, -59,  66,  20,  41, -23] ],
         "expected_result": 326,
         "subarray_indices": [(3,4),(10,12)], #top left and bottom right indices
+        "constraints": (2,3)
     },
 
 
@@ -149,6 +157,7 @@ tests = [
   [24,  21,  63,  70,  51, -31,  68,  19,  85,  77,  94,  90, -20, -41,  91,  16,  32, -90, -56, -19,  66, 45, -92, 65, 1, 23, -99, 100, 12, -9]],
         "expected_result": 486,
         "subarray_indices": [(12, 3), (13, 5)],
+        "constraints": (2,3)
     },
 
     {
@@ -204,6 +213,7 @@ tests = [
 [-91, -16,  38,  98,  24, -41, -25,  70]],
         "expected_result": 378,
         "subarray_indices": [(7, 2), (8, 4)],
+        "constraints": (2,3)
     },
 
 ]

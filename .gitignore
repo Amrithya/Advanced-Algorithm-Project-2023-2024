@@ -1,0 +1,6 @@
+
+.ipynb_checkpoints/main_dynamic-checkpoint.ipynb
+.ipynb_checkpoints/main_dynamic-checkpoint.py
+brute/__pycache__/__init__.cpython-311.pyc
+brute/__pycache__/helpers.cpython-311.pyc
+*.pyc
