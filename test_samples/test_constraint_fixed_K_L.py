@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1hVdUawblriYFp2jeyYYqyzk_vq058fP1
 """
 
-tests = [
+constrained_tests_fixed_K_L = [
     {   "matrix" : None,
         "expected_result": "No matrix",
         "subarray_indices": None,
@@ -15,7 +15,7 @@ tests = [
 	
     },
     {
-        "matrix": [1, 2, -1, -4, -20, None],
+        "matrix": [1, 2, -1, -4, -20],
         "expected_result": "1D matrix",
         "subarray_indices": None,
         "constraints": (2,3)

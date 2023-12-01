@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1hVdUawblriYFp2jeyYYqyzk_vq058fP1
 """
 
-tests = [
+constrained_tests_variable_K_L = [
     {
         "matrix": [[-50,  20,  87,  15, -76,  63, -91,  11,  96,  38, -16,  56, -93, -98,  62,  80, -36, -32,  99, -72],
                    [53,  76,  89, -23,  18, -70, -14,  49, -27,  44, -82,  87, -38,  84,  43,  13, -46, -61,  37, -42],
@@ -27,7 +27,7 @@ tests = [
 
 
         "expected_result": 410,
-        "subarray_indices": [(13,14),(2,14)], #n=200 top left and bottom right indices
+        "subarray_indices": [(13, 2), (14, 4)], #n=200 top left and bottom right indices
         "constraints": (2,3)
     },
 
@@ -50,7 +50,7 @@ tests = [
 
 
         "expected_result": 954,
-        "subarray_indices": [(9,14),(2,8)], #n=200 top left and bottom right indices
+        "subarray_indices": [(9,2),(14,8)], #n=200 top left and bottom right indices
         "constraints": (6,7)
     },
 
@@ -73,7 +73,7 @@ tests = [
 
 
         "expected_result": 1474,
-        "subarray_indices": [(3,14),(4,15)], #n=200 top left and bottom right indices
+        "subarray_indices": [(3,3),(14,15)], #n=200 top left and bottom right indices
         "constraints": (12,13)
     },
 
@@ -96,7 +96,7 @@ tests = [
 
 
         "expected_result": 565,
-        "subarray_indices": [(9,13),(6,8)], #n=200 top left and bottom right indices
+        "subarray_indices": [(9, 6), (13, 8)], #n=200 top left and bottom right indices
         "constraints": (5,3)
     },
 
@@ -119,7 +119,7 @@ tests = [
 
 
         "expected_result": 986,
-        "subarray_indices": [(5,13),(4,8)], #n=200 top left and bottom right indices
+        "subarray_indices": [(5, 4), (13, 8)], #n=200 top left and bottom right indices
         "constraints": (9,5)
     },
 
@@ -142,7 +142,7 @@ tests = [
 
 
         "expected_result": 1248,
-        "subarray_indices": [(3,4),(10,12)], #n=200 top left and bottom right indices
+        "subarray_indices": [(0, 2), (14, 9)], #n=200 top left and bottom right indices
         "constraints": (15,8)
     },
     {
@@ -164,7 +164,7 @@ tests = [
 
 
         "expected_result": 1182,
-        "subarray_indices": [(3,4),(10,12)], #n=200 top left and bottom right indices
+        "subarray_indices": [(0, 0), (14, 19)], #n=200 top left and bottom right indices
         "constraints": (15,20)
     },
     {
@@ -186,7 +186,7 @@ tests = [
 
 
         "expected_result": "K out of bound",
-        "subarray_indices": [(3,4),(10,12)], #n=200 top left and bottom right indices
+        "subarray_indices": None, #n=200 top left and bottom right indices
         "constraints": (18,10)
     },
     {
@@ -208,7 +208,7 @@ tests = [
 
 
         "expected_result": "L out of bound",
-        "subarray_indices": [(3,4),(10,12)], #n=200 top left and bottom right indices
+        "subarray_indices": None, #n=200 top left and bottom right indices
         "constraints": (10,25)
     }
 ]
