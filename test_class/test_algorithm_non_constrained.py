@@ -83,6 +83,7 @@ class TestAlgorithm(unittest.TestCase):
                 print(f"\nTest Case {i + 1} skipped: Matrix contains non-numeric values.")
                 skipped_tests += 1
                 continue
+            
             rows = len(matrix)
             columns = len(matrix[0])
             n_elements = rows * columns
@@ -113,10 +114,10 @@ class TestAlgorithm(unittest.TestCase):
                 except AssertionError as e:
                     ## check if the error was raised because It found a differnet solution not because it failed
                     if result == expected_result:
-                        print(f"Algorithm Found a differnet solution than the expected solution but it is the right solution")
+                        print("\033[36mAlgorithm Found a different solution than the expected solution but it is the right solution\033[0m")
                         self.print_success_inofrmation(i,result,expected_result,top_left,bottom_right,expected_indices,matrix)
                         execution_time = end_time - start_time
-                        size_run_time_test.append(execution_time)
+                        size_run_time_test.append((execution_time,n_elements))
                         successful_tests += 1
                         print(f"Time taken: {execution_time:.6f} seconds\n")
                         continue
