@@ -21,6 +21,7 @@ def positive_sum(matrix):
 
 
 def max_segment_branch_and_bound(matrix):
+    matrix = np.array(matrix)
     m = matrix.shape[0]
     n = matrix.shape[1]
     initial_partial = ([0, m-1, 0, n-1], np.sum(matrix))
@@ -69,4 +70,4 @@ def max_segment_branch_and_bound(matrix):
                     initial_partial = child[0]
 
 
-    return initial_partial[1] , (initial_partial[0][0] + 1, initial_partial[0][2] + 1) ,(initial_partial[0][1] + 1,initial_partial[0][3] + 1)
+    return initial_partial[1] , (initial_partial[0][0] , initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
