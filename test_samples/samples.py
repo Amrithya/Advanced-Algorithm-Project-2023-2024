@@ -1,5 +1,38 @@
 tests = [
     {
+        "matrix": [[500]],
+        "expected_result": 500,
+        "subarray_indices": [(0, 0), (0, 0)], #top left and bottom right indices,
+    },
+    # non numeric values
+     {
+        "matrix": [[1,2,None],
+                   [1,2,3]] ,
+        "expected_result": 29,
+        "subarray_indices": [(1, 1), (3, 3)], #top left and bottom right indices,
+    },
+    
+    # non rectangular  matrix 
+    {
+        "matrix": [[1,2,4,5],
+                   [1,2,3]] ,
+        "expected_result": 29,
+        "subarray_indices": [(1, 1), (3, 3)], #top left and bottom right indices,
+    },
+    
+    # One D matrix 
+    {
+        "matrix": [1,2,4,5] ,
+        "expected_result": 29,
+        "subarray_indices": [(1, 1), (3, 3)], #top left and bottom right indices,
+    },
+    # empty matrix
+     {
+        "matrix": [] ,
+        "expected_result": 29,
+        "subarray_indices": [(1, 1), (3, 3)], #top left and bottom right indices,
+    },
+    {
         "matrix": [
             [1, 2, -1, -4, -20],
             [-8, -3, 4, 2, 1],
@@ -108,7 +141,9 @@ tests = [
     },
     {
         "matrix": [[1, 1],
-                   [1, 1], [1, 1], [1, 1]],
+                   [1, 1],
+                   [1, 1],
+                   [1, 1]],
         "expected_result": 8,
         "subarray_indices": [(0, 0), (3, 1)],
     },
