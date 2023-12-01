@@ -1,4 +1,6 @@
 import random
+import numpy as np
+
 random.seed(42)  # Set a random seed for reproducibility
 
 class Ant:
@@ -18,7 +20,7 @@ class Ant:
         top, left = self.position
         self.subarray_sum = sum(matrix[i][j] for i in range(top, top + K) for j in range(left, left + L))
 
-    def get_bottom_right(self, K, L):
+    def get_bottom_right(self, matrix, K, L):
         bottom = min(self.position[0] + K - 1, len(matrix) - 1)
         right = min(self.position[1] + L - 1, len(matrix[0]) - 1)
         return (bottom, right)
@@ -42,9 +44,9 @@ def update_pheromones(ants, pheromone_matrix, evaporation_rate):
         x, y = ant.position
         pheromone_matrix[x][y] += ant.subarray_sum  # Basic pheromone update
 
-def find_best_solution(ants, K, L):
+def find_best_solution(ants, matrix, K, L):
     best_ant = max(ants, key=lambda ant: ant.subarray_sum)
-    return best_ant.subarray_sum, best_ant.position, best_ant.get_bottom_right(K, L)
+    return best_ant.subarray_sum, best_ant.position, best_ant.get_bottom_right(matrix, K, L)
 
 def ant_colony_optimization(matrix, K, L, num_ants, num_iterations, evaporation_rate):
     if K > len(matrix) or L > len(matrix[0]):
@@ -60,21 +62,6 @@ def ant_colony_optimization(matrix, K, L, num_ants, num_iterations, evaporation_
 
         update_pheromones(ants, pheromone_matrix, evaporation_rate)
 
-    return find_best_solution(ants, K, L)
+    return find_best_solution(ants, matrix, K, L)
 
-# Usage example
-matrix = [
-    [1, 2, -1, -4, -20],
-    [-8, -3, 4, 2, 1],
-    [3, 8, 10, 1, 3],
-    [-4, -1, 1, 7, -6]
-]
-K, L =1 , 1
-num_ants = 10
-num_iterations = 100
-evaporation_rate = 0.5
 
-result, top_left, bottom_right = ant_colony_optimization(matrix, K, L, num_ants, num_iterations, evaporation_rate)
-print("Maximum Subarray Sum:", result)
-print("Top Left Index of Subarray:", top_left)
-print("Bottom Right Index of Subarray:", bottom_right)
