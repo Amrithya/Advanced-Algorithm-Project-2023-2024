@@ -24,7 +24,9 @@ def max_segment_branch_and_bound(matrix):
     matrix = np.array(matrix)
     m = matrix.shape[0]
     n = matrix.shape[1]
-    initial_partial = ([0, m-1, 0, n-1], np.sum(matrix))
+
+    initial_partial = ((0, m-1, 0, n-1), np.sum(matrix))
+
     initial_best = positive_sum(matrix)
 
     def valid(i1, i2, j1, j2):
@@ -46,28 +48,34 @@ def max_segment_branch_and_bound(matrix):
         children = []
 
         if valid(i1+1, i2, j1, j2):
-            children.append([((i1+1, i2, j1, j2), matrix_sub_sum(i1+1, i2, j1, j2)), positive_sub_sum(i1+1, i2, j1, j2)])
-
+            children.append((i1+1, i2, j1, j2))
         if valid(i1, i2-1, j1, j2):
-            children.append([((i1, i2-1, j1, j2), matrix_sub_sum(i1, i2-1, j1, j2)), positive_sub_sum(i1, i2-1, j1, j2)])
+            children.append((i1, i2-1, j1, j2))
 
         if valid(i1, i2, j1+1, j2):
-            children.append([((i1, i2, j1+1, j2), matrix_sub_sum(i1, i2, j1+1, j2)), positive_sub_sum(i1, i2, j1+1, j2)])
+            children.append((i1, i2, j1+1, j2))
 
         if valid(i1, i2, j1, j2-1):
-            children.append([((i1, i2, j1, j2-1), matrix_sub_sum(i1, i2, j1, j2-1)), positive_sub_sum(i1, i2, j1, j2-1)])
+            children.append((i1, i2, j1, j2-1))
         return children
 
     q = deque([(initial_partial, initial_best)])
+    d = {initial_partial[0]:(initial_partial[1], initial_best)}
+
 
     while q:
         current_partial, current_best = q.popleft()
 
         for child in generate_children(current_partial, current_best):
-            if child[1] > initial_partial[1]:
-                q.append(child)
-                if child[0][1] > initial_partial[1]:
-                    initial_partial = child[0]
+          if child not in d.keys():
+            a = matrix_sub_sum(*child)
+            b = positive_sub_sum(*child)
+            d[child] = (a, b)
+          if d[child][1] > initial_partial[1]:
+            q.append(((child, d[child][0]), d[child][1] ))
+            if d[child][0]  > initial_partial[1]:
+              initial_partial = (child, d[child][0])
 
 
-    return initial_partial[1] , (initial_partial[0][0] , initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
+    return initial_partial[1] , (initial_partial[0][0], initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
+

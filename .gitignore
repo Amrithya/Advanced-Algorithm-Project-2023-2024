@@ -4,3 +4,6 @@
 brute/__pycache__/__init__.cpython-311.pyc
 brute/__pycache__/helpers.cpython-311.pyc
 *.pyc
+dynamic_programming/.ipynb_checkpoints/dynamic_programming-checkpoint.py
+test_samples/.ipynb_checkpoints/test_constraint_fixed_K_L-checkpoint.py
+.ipynb_checkpoints/main_amgad-checkpoint.ipynb
