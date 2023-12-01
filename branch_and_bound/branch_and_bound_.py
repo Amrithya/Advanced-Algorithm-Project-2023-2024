@@ -64,14 +64,21 @@ def max_segment_branch_and_bound(matrix):
         current_partial, current_best = q.popleft()
 
         for child in generate_children(current_partial, current_best):
-          if child not in d:
+          if child not in d.keys():
             a = matrix_sub_sum(*child)
             b = positive_sub_sum(*child)
             d[child] = (a, b)
-            if b > initial_partial[1]:
-                q.append(((child, a), b))
-                if a > initial_partial[1]:
-                    initial_partial = (child, a)
+          if d[child][1] > initial_partial[1]:
+            q.append(((child, d[child][0]), d[child][1] ))
+            if d[child][0]  > initial_partial[1]:
+              initial_partial = (child, d[child][0])
 
 
     return initial_partial[1] , (initial_partial[0][0], initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
+
+A = np.array([[1, 2, -1, -4, -20],
+              [-8, -3, 4, 2, 1],
+              [3, 8, 10, 1, 3],
+              [-4, -1, 1, 7, -6]])
+max_segment_branch_and_bound(A)
+
