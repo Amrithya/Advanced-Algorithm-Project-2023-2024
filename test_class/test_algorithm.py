@@ -1,6 +1,9 @@
 import unittest
 import timeit
-from test_samples.test_non_constraint import tests
+from test_samples.test_non_constraint import non_constrained_tests 
+from test_samples.test_constraint_variable_K_L import constrained_tests_variable_K_L 
+from test_samples.test_constraint_fixed_K_L import constrained_tests_fixed_K_L 
+
 from brute.helpers import print_submatrix,calculate_subarray_sum
 
 class TestAlgorithm(unittest.TestCase):
@@ -47,8 +50,18 @@ class TestAlgorithm(unittest.TestCase):
     """  
     
                     
-    def run_algorithm_tests(self, algorithm, algorithm_name):
-        print(f"\nTESTING {algorithm_name} \n\n================================")
+    def run_algorithm_tests(self, algorithm, algorithm_name,constrained_type=None):
+        if constrained_type == "variable":
+            tests = constrained_tests_variable_K_L
+            test_type = "WITH VARIABLE CONSTRAINTS"
+        elif constrained_type == "fixed":
+            tests = constrained_tests_fixed_K_L
+            test_type = "WITH FIXED CONSTRAINTS"
+        else:
+            tests = non_constrained_tests
+            test_type = "WITHOUT CONSTRAINTS"
+
+        print(f"\nTESTING {algorithm_name} {test_type}\n\n================================")
         successful_tests = 0
         total_tests = len(tests)
         skipped_tests = 0 # counts invalid tests
@@ -96,7 +109,15 @@ class TestAlgorithm(unittest.TestCase):
                 try:
                     # calculate the time for the algorithm
                     start_time = timeit.default_timer()  # Record the start time
-                    result, top_left, bottom_right = algorithm(matrix)
+                    if constrained_type == "variable" or constrained_type == "fixed" :
+                        k, l = test_sample["constraints"]
+                        if k > rows or l > columns:
+                            print(f"\nTest Case {i + 1} skipped: Constraints k or l exceed matrix dimensions.")
+                            skipped_tests += 1
+                            continue
+                        result, top_left, bottom_right = algorithm(matrix, k, l)
+                    else:
+                        result, top_left, bottom_right = algorithm(matrix)
                     end_time = timeit.default_timer()  # Record the end time
                     
                     self.assertEqual(result, expected_result)

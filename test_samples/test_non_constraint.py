@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1hVdUawblriYFp2jeyYYqyzk_vq058fP1
 """
 
-tests = [
+non_constrained_tests = [
     {   "matrix" : None,
         "expected_result": "No matrix",
         "subarray_indices": "NIL"
