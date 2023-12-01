@@ -30,6 +30,11 @@ tests = [
         "subarray_indices": "NIL"
     },
     {
+        "matrix": [[80],[]],
+        "expected_result": "Non Rectange matrix",
+        "subarray_indices": "NIL"
+    },
+    {
         "matrix": [[1, 1],
                    [1, 1], [1, 1], [1, 1]],
         "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",

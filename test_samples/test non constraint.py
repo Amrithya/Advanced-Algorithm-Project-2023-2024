@@ -15,7 +15,17 @@ tests = [
     {
         "matrix": [[1, 2, -1, -4, -20, None]
         ],
-        "expected_result": "1D matrix",
+        "expected_result": "Invalid input",
+        "subarray_indices": "NIL"
+    },
+     {
+        "matrix": [[80, -2, -21, -4, -78],[58,98,-9]],
+        "expected_result": "Non Rectange matrix",
+        "subarray_indices": "NIL"
+    },
+    {
+        "matrix": [[80],[]],
+        "expected_result": "Non Rectange matrix",
         "subarray_indices": "NIL"
     },
 
