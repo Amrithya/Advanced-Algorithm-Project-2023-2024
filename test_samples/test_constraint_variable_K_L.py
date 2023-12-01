@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1hVdUawblriYFp2jeyYYqyzk_vq058fP1
 """
 
-tests = [
+constrained_tests_variable_K_L = [
     {
         "matrix": [[-50,  20,  87,  15, -76,  63, -91,  11,  96,  38, -16,  56, -93, -98,  62,  80, -36, -32,  99, -72],
                    [53,  76,  89, -23,  18, -70, -14,  49, -27,  44, -82,  87, -38,  84,  43,  13, -46, -61,  37, -42],
