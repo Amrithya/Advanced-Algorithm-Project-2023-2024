@@ -70,22 +70,3 @@ def genetic_algorithm(matrix, K, L, num_generations, population_size, num_parent
     top, left = best_individual
     bottom, right = top + K - 1, left + L - 1
     return calculate_subarray_sum(matrix, top, left, K, L), (top, left), (bottom, right)
-
-# Example usage
-matrix = [
-    [1, 2, -1, -4, -20],
-    [-8, -3, 4, 2, 1],
-    [3, 8, 10, 1, 3],
-    [-4, -1, 1, 7, -6]
-]
-
-# Print the matrix
-print("Matrix:")
-for row in matrix:
-    print(row)
-
-K, L = 1, 1  # Subarray size constraints
-result, (top_left_x, top_left_y), (bottom_right_x, bottom_right_y) = genetic_algorithm(matrix, K, L, num_generations=100, population_size=50, num_parents=10)
-print("\nMaximum Subarray Sum:", result)
-print("Top Left Index:", (top_left_x, top_left_y))
-print("Bottom Right Index:", (bottom_right_x, bottom_right_y))
