@@ -1,7 +1,6 @@
 import unittest
 import timeit
-from test_samples.samples import tests
-# import numpy as np
+from test_samples.test_non_constraint import tests
 from brute.helpers import print_submatrix,calculate_subarray_sum
 
 class TestAlgorithm(unittest.TestCase):
@@ -33,8 +32,7 @@ class TestAlgorithm(unittest.TestCase):
         # print the matrix used
         for row in matrix:
             print(row)
-        # # print the submatrix answer
-        print(f"Submatrix:")
+        #  print the submatrix answer
         print_submatrix(matrix, top_left[0], top_left[1], bottom_right[0], bottom_right[1])
 
 
