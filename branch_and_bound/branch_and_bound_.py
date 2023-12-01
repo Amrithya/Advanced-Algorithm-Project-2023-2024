@@ -24,7 +24,9 @@ def max_segment_branch_and_bound(matrix):
     matrix = np.array(matrix)
     m = matrix.shape[0]
     n = matrix.shape[1]
+
     initial_partial = ((0, m-1, 0, n-1), np.sum(matrix))
+
     initial_best = positive_sum(matrix)
 
     def valid(i1, i2, j1, j2):
@@ -60,6 +62,7 @@ def max_segment_branch_and_bound(matrix):
     q = deque([(initial_partial, initial_best)])
     d = {initial_partial[0]:(initial_partial[1], initial_best)}
 
+
     while q:
         current_partial, current_best = q.popleft()
 
@@ -75,3 +78,4 @@ def max_segment_branch_and_bound(matrix):
 
 
     return initial_partial[1] , (initial_partial[0][0], initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
+
