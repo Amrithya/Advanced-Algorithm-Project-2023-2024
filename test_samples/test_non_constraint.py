@@ -15,7 +15,7 @@ tests = [
     {
         "matrix": [[1, 2, -1, -4, -20, None]
         ],
-        "expected_result": "1D matrix",
+        "expected_result": "Invalid input",
         "subarray_indices": "NIL"
     },
      {
@@ -24,49 +24,53 @@ tests = [
         "subarray_indices": "NIL"
     },
     {
-        "matrix": [[1, 2, -1, -4, -20]
-        ],
-        "expected_result": "1D matrix",
-        "subarray_indices": "NIL"
-    },
-    {
         "matrix": [[80],[]],
         "expected_result": "Non Rectange matrix",
         "subarray_indices": "NIL"
     },
+
+    {
+        "matrix": [1, 2, -1, -4, -20],
+        "expected_result": "1D matrix",
+        "subarray_indices": "NIL"
+    },
+    {
+        "matrix": [[1, 2],
+                   [3, 4]],
+        "expected_result": 10,
+        "subarray_indices": [(0,0),(1,1)],
+    },
     {
         "matrix": [[1, 1],
-                   [1, 1], [1, 1], [1, 1]],
-        "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",
-        "subarray_indices": None,
-    },
-    {
-        "matrix": [[1, 1, 1],
-                   [1, 1, 1], [1, 1, 1], [1, 1, 1]],
-        "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",
-        "subarray_indices": None,
-    },
-
-     {
-        "matrix": [[1, 2], [3, 4]],
-        "expected_result": "ERROR: L IS LARGER THAN THE NUMBER OF COLUMN",
-        "subarray_indices": None,
-    },
+                   [1, 1], 
+                   [1, 1],
+                   [1, 1]],
+        "expected_result": 8,
+        "subarray_indices": [(0, 0), (3, 1)],
+    },  
 
     {
-        "matrix": [[-1, -2, -3], [-4, -5, -6], [-7, -8, -9]],
-        "expected_result": -21,
-        "subarray_indices": [(0, 0), (1, 2)],
+        "matrix": [[-1, -2, -3],
+                   [-4, -5, -6],
+                   [-7, -8, -9]],
+        "expected_result": -1,
+        "subarray_indices": [(0, 0), (0, 0)],
     },
      {
-        "matrix": [[-1, -2, -3], [-4, -5, -6], [-7, -8, -9], [-10, -11, -12]],
-        "expected_result": -21,
-        "subarray_indices": [(0, 0), (1, 2)],
+        "matrix": [[-1, -2, -3],
+                   [-4, -5, -6],
+                   [-7, -8, -9], 
+                   [-10, -11, -12]],
+        "expected_result": -1,
+        "subarray_indices": [(0, 0), (0,0)],
     },
      {
-        "matrix": [[-2, 5, -1, 4], [8, -6, 3, 1], [2, 2, -4, -1], [-3, 2, 6, -1]],
-        "expected_result": 7,
-        "subarray_indices": [(0, 0), (1, 2)],
+        "matrix": [[-2, 5, -1, 4],
+                   [8, -6, 3, 1], 
+                   [2, 2, -4, -1],
+                   [-3, 2, 6, -1]],
+        "expected_result": 15,
+        "subarray_indices": [(0, 0), (3, 3)],
     },
 
     {
@@ -77,7 +81,7 @@ tests = [
             [4, -2, 3, 7, -2],
         ],
         "expected_result": 14,
-        "subarray_indices": [(2, 2), (3, 4)],
+        "subarray_indices": [(0, 2), (3, 4)],
     },
 
     {
@@ -89,8 +93,8 @@ tests = [
                       [-25,  50,  18,  43,  39],
                       [42, -33,  49,  23,  42]],
 
-        "expected_result": 214,
-        "subarray_indices": [(5, 2), (6, 4)],
+        "expected_result": 341,
+        "subarray_indices": [(3, 0), (6, 4)],
     },
 
    {
@@ -103,22 +107,8 @@ tests = [
  [24, -78, -71,  32,  74, -50, -85,  67, -47, -10,  46,  90, -62,  49,  11],
  [10,  19, -33, -50, -47, -82,  91, -71,  24, -16,  52,  83,  36, -15, -76],
  [ 14,  99, -34,  82,  13,  34,  16, -74,  56, -97,  97,  55,  10,  38,  99]] ,
-        "expected_result": 327,
-        "subarray_indices": [(5,7),(6,9)], #top left and bottom right indices
-    },
-
-    {
-        "matrix": [[-89,  45,  97, -13, -15, -68, -25,  10,  69, -84,  56, -64,  67, -48,  50],
-[-51, -57,  94,  94,  45, -77,  56, -58,  22,  44, -98,  33,  25,  51, -31],
-[-98,  58, -55,  75, -43,  80,  95, -20, -61, -59,  87, -32,  47,  29,  60],
-[-51,  99,  46,  90,  55,  13, -74, -89, -96, -33, -60,  61, -78,  64,  26],
-[-21, -89,  18, -82,  11,  53, -86, -54, -98,  70,  90, -99,  26, -20, -80],
-[84,  68, -10,  32,  23, -47,  73,  23, -64, -31, -20,  74,  50, -86,  48],
- [24, -78, -71,  32,  74, -50, -85,  67, -47, -10,  46,  90, -62,  49,  11],
- [10,  19, -33, -50, -47, -82,  91, -71,  24, -16,  52,  83,  36, -15, -76],
- [ 14,  99, -34,  82,  13,  34,  16, -74,  56, -97,  97,  55,  10,  38,  99]] ,
-        "expected_result": 333,
-        "subarray_indices": [(7,10),(8,12)], #top left and bottom right indices
+        "expected_result": 741,
+        "subarray_indices": [(0,10),(8,14)], #top left and bottom right indices
     },
 
     {
@@ -132,8 +122,8 @@ tests = [
 [-62, -81,  82,  97,  72,  49, -58,  84,  65,  37, -18, -92,  27, -23, -26, -49, -23,  60,  79, -30],
  [18,  89, -44, -13, -62,  61, -87, -99,  26,  98, -18,  42,  84, -34, -69, -10,  11, -96,  98,  93],
  [16,  43,  85, -84,  25, -70,  80, -63,  21, -71,  20, -24,  42,  29, -38, -59,  66,  20,  41, -23] ],
-        "expected_result": 326,
-        "subarray_indices": [(3,4),(10,12)], #top left and bottom right indices
+        "expected_result": 682,
+        "subarray_indices": [(0,1),(7,9)], #top left and bottom right indices
     },
 
 
@@ -153,8 +143,8 @@ tests = [
   [26, -12, -86,  88,  94,  93, -82, -66, -45, -11,  59,  51, -18,  56, -56, -32,  19,  54, -97, -74, -89,  68,  43, -87,  34, -75, -91,  18, -98],
   [38,  51,  13,  87,  62,  62, -66,  91,  25, -35,  99, -87, -16, -22, -54,  76,  69,  97, -53,  46, -91, -53, -99,  97, -95,  84,  94,  65, -59],
   [24,  21,  63,  70,  51, -31,  68,  19,  85,  77,  94,  90, -20, -41,  91,  16,  32, -90, -56, -19,  66, 45, -92, 65, 1, 23, -99, 100, 12, -9]],
-        "expected_result": 486,
-        "subarray_indices": [(12, 3), (13, 5)],
+        "expected_result": 2372,
+        "subarray_indices": [(0, 3), (14, 3)],
     },
 
     {
@@ -208,8 +198,8 @@ tests = [
  [77, -16, -86, -51, -43,  71,  69, -46],
 [-29,  53, -50, -60, -27, -79, -59, -94],
 [-91, -16,  38,  98,  24, -41, -25,  70]],
-        "expected_result": 378,
-        "subarray_indices": [(7, 2), (8, 4)],
+        "expected_result": 1324,
+        "subarray_indices": [(7, 0), (41, 3)],
     },
 
 ]
