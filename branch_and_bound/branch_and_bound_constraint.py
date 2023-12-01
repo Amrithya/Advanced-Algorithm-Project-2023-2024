@@ -45,28 +45,33 @@ def max_segment_branch_and_bound_constraint(matrix, k, l):
         children = []
 
         if valid(i1+1, i2, j1, j2):
-            children.append([((i1+1, i2, j1, j2), matrix_sub_sum(i1+1, i2, j1, j2)), positive_sub_sum(i1+1, i2, j1, j2)])
-
+            children.append((i1+1, i2, j1, j2))
         if valid(i1, i2-1, j1, j2):
-            children.append([((i1, i2-1, j1, j2), matrix_sub_sum(i1, i2-1, j1, j2)), positive_sub_sum(i1, i2-1, j1, j2)])
+            children.append((i1, i2-1, j1, j2))
 
         if valid(i1, i2, j1+1, j2):
-            children.append([((i1, i2, j1+1, j2), matrix_sub_sum(i1, i2, j1+1, j2)), positive_sub_sum(i1, i2, j1+1, j2)])
+            children.append((i1, i2, j1+1, j2))
 
         if valid(i1, i2, j1, j2-1):
-            children.append([((i1, i2, j1, j2-1), matrix_sub_sum(i1, i2, j1, j2-1)), positive_sub_sum(i1, i2, j1, j2-1)])
+            children.append((i1, i2, j1, j2-1))
         return children
 
     q = deque([(initial_partial, initial_best)])
+    d = {initial_partial[0]:(initial_partial[1], initial_best)}
 
     while q:
         current_partial, current_best = q.popleft()
 
         for child in generate_children(current_partial, current_best):
-            if child[1] > initial_partial[1]:
-                q.append(child)
-                if child[0][1] > initial_partial[1] and (child[0][0][1] - child[0][0][0] + 1 == k) and (child[0][0][3] - child[0][0][2] + 1 == l):
-                    initial_partial = child[0]
+          if child not in d:
+            a = matrix_sub_sum(*child)
+            b = positive_sub_sum(*child)
+            d[child] = (a, b)
+            if b > initial_partial[1]:
+                q.append(((child, a), b))
+                if a > initial_partial[1]:
+                    initial_partial = (child, a)
 
 
-    return initial_partial[1] , (initial_partial[0][0] + 1, initial_partial[0][2] + 1) ,(initial_partial[0][1] + 1,initial_partial[0][3] + 1)
+
+    return initial_partial[1] , (initial_partial[0][0], initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
