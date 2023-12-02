@@ -25,7 +25,7 @@ def generate_children(node, m, n):
         for j in range(1, (m if i < 2 else n) + 1):
             child = node.copy()
             child[i] = j
-            if valid(child):
+            if valid(child, m, n):
                 children.append(child)
         break
     return children
