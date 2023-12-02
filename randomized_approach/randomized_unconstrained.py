@@ -17,7 +17,8 @@ def submatrix_sum(sum_matrix, top, left, bottom, right):
 
 def random_submatrix_sum(matrix):
     M, N = len(matrix), len(matrix[0])
-    num_iterations= (M*(M+1)*N*(N*1))/4
+    num_iterations= int((M*(M+1)*N*(N*1))/2)
+
     sum_matrix = preprocess_sum_matrix(matrix)
     submatrices = [((top, left), (bottom, right))
                    for top in range(M) for bottom in range(top, M)
@@ -37,4 +38,4 @@ def random_submatrix_sum(matrix):
             max_sum = current_sum
             best_submatrix = submatrix
 
-    return max_sum, best_submatrix
+    return max_sum, best_submatrix[0], best_submatrix[1]

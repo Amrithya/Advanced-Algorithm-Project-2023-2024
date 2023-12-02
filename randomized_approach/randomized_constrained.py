@@ -2,7 +2,7 @@ import random
 
 def random_fixed_size_submatrix_sum(matrix, K, L):
     M, N = len(matrix), len(matrix[0])
-    num_iterations= (M*(M+1)*N*(N*1))/4
+    num_iterations= int((M*(M+1)*N*(N*1))/4)
     max_sum = float('-inf')
     best_submatrix = None
 
@@ -18,4 +18,4 @@ def random_fixed_size_submatrix_sum(matrix, K, L):
             max_sum = current_sum
             best_submatrix = ((i1, j1), (i2, j2))
 
-    return max_sum, best_submatrix
+    return max_sum, best_submatrix[0], best_submatrix[1]

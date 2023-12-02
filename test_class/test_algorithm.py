@@ -6,6 +6,7 @@ from test_samples.test_constraint_fixed_K_L import constrained_tests_fixed_K_L
 
 from brute.helpers import print_submatrix, calculate_subarray_sum
 
+
 class TestAlgorithm(unittest.TestCase):
     """HELPER FUNCTIONS"""
 

@@ -46,27 +46,7 @@ def greedy_algorithm_non_constrained(matrix):
 
 
         
-#Constrained Greedy Algorithm
-def greedy_algorithm_constrained(matrix, k, l):
-    rows = len(matrix)
-    cols = len(matrix[0]) if rows > 0 else 0
 
-    max_sum = float('-inf')
-    start_row = end_row = start_col = end_col = -1
-
-    for left in range(cols - l + 1):
-        for top in range(rows - k + 1):
-            temp = [0] * k
-            for right in range(left, left + l):
-                for i in range(top, top + k):
-                    temp[i - top] += matrix[i][right]
-            current_sum, current_start_row, current_end_row = max_subarray_sum_1d_with_indices(temp)
-            
-            if current_sum > max_sum:
-                max_sum = current_sum
-                start_row, end_row, start_col, end_col = current_start_row + top, current_end_row + top, left, left + l - 1
-    
-    return max_sum, (start_row, start_col), (end_row, end_col)
 
 
 
