@@ -78,6 +78,8 @@ def maxMatrixSum_constraint(matrix, K, L):
 
             if submatrix_sum > max_sum:
                 max_sum = submatrix_sum
-                top_left = (top, left)
-                bottom_right = (bottom, right)
-    return max_sum,top_left,bottom_right
+                top = i - K
+                bottom = i - 1
+                left = j - L
+                right = j - 1
+    return max_sum,(top,left),(bottom,right)
