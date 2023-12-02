@@ -45,7 +45,7 @@ def bound(child, matrix):
     j1 = 1 if j1 == 0 else j1
     j2 = matrix.shape[1] if j2 == 0 else j2
 
-    sub = input_matrix[i1-1:i2, j1-1:j2]
+    sub = matrix[i1-1:i2, j1-1:j2]
     positive_values = sub[sub > 0]
     up_bound = np.sum(positive_values)
     child_sum = np.sum(sub)
