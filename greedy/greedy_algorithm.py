@@ -45,50 +45,8 @@ def greedy_algorithm_non_constrained(matrix):
 
 
 
-def modified_kadanes_with_constraints(arr, k):
-    max_sum = float('-inf')
-    current_sum = 0
-    start = end = 0
-    queue = []
-
-    for i, num in enumerate(arr):
-        current_sum += num
-        queue.append(num)
-
-        if i >= k:
-            current_sum -= queue.pop(0)
-            start += 1
-
-        if current_sum > max_sum:
-            max_sum = current_sum
-            end = i
-
-    return max_sum, start, end
 
 
-def greedy_algorithm_constrained(matrix, k, l):
-    rows, cols = len(matrix), len(matrix[0])
-    if k > rows or l > cols:
-        return "Constraints exceed matrix dimensions"
-
-    max_sum = float('-inf')
-    final_top = final_left = final_bottom = final_right = 0
-
-    for left in range(cols):
-        temp = [0] * rows
-
-        for right in range(left, min(left + l, cols)):
-            for i in range(rows):
-                temp[i] += matrix[i][right]
-
-            if right - left + 1 == l:
-                current_max, top, bottom = modified_kadanes_with_constraints(temp, k)
-                if current_max > max_sum:
-                    max_sum = current_max
-                    final_top, final_bottom = top, bottom
-                    final_left, final_right = left, right
-
-    return max_sum, (final_top, final_left), (final_bottom, final_right)
 
 
 
