@@ -87,13 +87,13 @@ def create_test_result_plots(test_results, algorithm_name):
     # plt.xlabel('Run Time (seconds)', fontsize=14)
     # plt.show()
 
-    # # Pair Plot for Run Times and Constraints Size (if applicable)
-    # if constraints and constraints_type == 'variable':
-    #     data = {'Constraints Size': constraints_size, 'Run Time': run_times}
-    #     df = pd.DataFrame(data)
-    #     plt.figure(figsize=(12, 8))
-    #     sns.pairplot(df, markers='o', palette='husl', height=4, diag_kind='kde')
-    #     plt.suptitle(f'Pair Plot: Constraints Size vs. Run Time for {algorithm_name} {msg}', y=1.02, fontsize=16, fontweight='bold')
-    #     plt.show()
+    # Pair Plot for Run Times and Constraints Size (if applicable)
+    if constraints and constraints_type == 'variable':
+        data = {'Constraints Size': constraints_size, 'Run Time': run_times}
+        df = pd.DataFrame(data)
+        plt.figure(figsize=(12, 8))
+        sns.pairplot(df, markers='o', palette='husl', height=4, diag_kind='kde')
+        plt.suptitle(f'Pair Plot: Constraints Size vs. Run Time for {algorithm_name} {msg}', y=1.02, fontsize=16, fontweight='bold')
+        plt.show()
 
     return
