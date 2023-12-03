@@ -45,28 +45,54 @@ def greedy_algorithm_non_constrained(matrix):
 
 
 
-        
-#Constrained Greedy Algorithm
+def modified_kadanes_with_constraints(arr, k):
+    max_sum = float('-inf')
+    current_sum = 0
+    start = end = 0
+    queue = []
+
+    for i, num in enumerate(arr):
+        current_sum += num
+        queue.append(num)
+
+        if i >= k:
+            current_sum -= queue.pop(0)
+            start += 1
+
+        if current_sum > max_sum:
+            max_sum = current_sum
+            end = i
+
+    return max_sum, start, end
+
+
 def greedy_algorithm_constrained(matrix, k, l):
-    rows = len(matrix)
-    cols = len(matrix[0]) if rows > 0 else 0
+    rows, cols = len(matrix), len(matrix[0])
+    if k > rows or l > cols:
+        return "Constraints exceed matrix dimensions"
 
     max_sum = float('-inf')
-    start_row = end_row = start_col = end_col = -1
+    final_top = final_left = final_bottom = final_right = 0
 
-    for left in range(cols - l + 1):
-        for top in range(rows - k + 1):
-            temp = [0] * k
-            for right in range(left, left + l):
-                for i in range(top, top + k):
-                    temp[i - top] += matrix[i][right]
-            current_sum, current_start_row, current_end_row = max_subarray_sum_1d_with_indices(temp)
-            
-            if current_sum > max_sum:
-                max_sum = current_sum
-                start_row, end_row, start_col, end_col = current_start_row + top, current_end_row + top, left, left + l - 1
-    
-    return max_sum, (start_row, start_col), (end_row, end_col)
+    for left in range(cols):
+        temp = [0] * rows
+
+        for right in range(left, min(left + l, cols)):
+            for i in range(rows):
+                temp[i] += matrix[i][right]
+
+            if right - left + 1 == l:
+                current_max, top, bottom = modified_kadanes_with_constraints(temp, k)
+                if current_max > max_sum:
+                    max_sum = current_max
+                    final_top, final_bottom = top, bottom
+                    final_left, final_right = left, right
+
+    return max_sum, (final_top, final_left), (final_bottom, final_right)
+
+
+
+
 
 
 

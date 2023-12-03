@@ -65,7 +65,7 @@ def gradient_descent_submatrix(cum_sum_matrix, M, N):
     return max_sum, best_submatrix
 
 def find_max_sum_submatrix(matrix):
-    M, N = matrix.shape
+    M, N = np.array(matrix).shape
     num_trials = calculate_trials(M, N)
     max_iterations_per_trial = calculate_iterations(M, N)
     cum_sum_matrix = create_cumulative_sum_matrix(matrix)
@@ -78,4 +78,4 @@ def find_max_sum_submatrix(matrix):
             overall_max_sum = max_sum
             overall_best_submatrix = best_submatrix
 
-    return overall_max_sum, overall_best_submatrix
+    return overall_max_sum, overall_best_submatrix[0], overall_best_submatrix[1]
