@@ -45,7 +45,7 @@ def calculate_complexity(matrix_size, algorithm_type, P_G=None, A_I=None, K=None
 # Main function
 def main():
     # Define your project directory
-    project_directory = 'C:/Users/youss/OneDrive/Bureau/Adavance Algorithm/Advanced-Algorithm-Project-2023-2024'
+    project_directory = 'C:/Users/youss/OneDrive/Bureau/Adavance Algorithm/Advanced-Algorithm-Project-2023-2024/Plot genetic_ant_algorithm'
 
     matrices = {
         'small_matrix': generate_matrix(5, 5, (-10, 10)),
