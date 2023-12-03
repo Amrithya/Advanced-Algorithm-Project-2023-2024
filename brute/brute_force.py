@@ -52,6 +52,3 @@ def brute_force_constrained(matrix,K,L):
 
 
 
-
-
-

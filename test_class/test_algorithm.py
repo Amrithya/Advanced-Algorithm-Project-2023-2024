@@ -1,8 +1,8 @@
 import unittest
 import timeit
-from test_samples.non_constrained_test_cases import non_constrained_tests as non_constrained_tests
-from test_samples.variable_constrained_test_cases import variableconstrainedtestcases as constrained_tests_variable_K_L 
-from test_samples.constrainted_fixed_test_cases import fixedtextcases as constrained_tests_fixed_K_L 
+from test_samples.test_non_constraint import non_constrained_tests as non_constrained_tests
+from test_samples.test_constraint_variable_K_L import constrained_tests_variable_K_L as constrained_tests_variable_K_L 
+from test_samples.test_constraint_fixed_K_L import constrained_tests_fixed_K_L as constrained_tests_fixed_K_L 
 
 from brute.helpers import print_submatrix, calculate_subarray_sum
 
