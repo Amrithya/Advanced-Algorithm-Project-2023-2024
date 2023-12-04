@@ -47,7 +47,7 @@ print(result)
 
 ### Usage
 
-To use this function, import it from the `brute_force` module and pass a 2D array as the argument.
+To use this function, import it from the `brute_force` module and pass a 2D array , k, and l as the arguments .
 
  For example:
 
