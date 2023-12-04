@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
-import pandas as pd
+
 
 def create_test_result_plots(test_results, algorithm_name):
     constraints = test_results['constraints']
@@ -46,7 +45,7 @@ def create_test_result_plots(test_results, algorithm_name):
         run_times = [run_time for run_time, _ in size_run_time_test]
         plt.figure(figsize=(10, 6))
         sns.lineplot(x=constraints_size, y=run_times, marker='o', color='#1f78b4', alpha=0.7, label='Run Time')
-        sns.scatterplot(x=constraints_size, y=run_times, color='#e31a1c', s=50, label='Data Points')
+        # sns.scatterplot(x=constraints_size, y=run_times, color='#e31a1c', s=50, label='Data Points')
         plt.title(f'Size vs. Run Time for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
         plt.xlabel('Constraints Size (k * l)', fontsize=14)
         plt.ylabel('Run Time (seconds)', fontsize=14)
@@ -57,7 +56,7 @@ def create_test_result_plots(test_results, algorithm_name):
         run_times = [run_time for run_time, _ in size_run_time_test]
         plt.figure(figsize=(10, 6))
         sns.lineplot(x=sizes, y=run_times, marker='o', color='#1f78b4', alpha=0.7, label='Run Time')
-        sns.scatterplot(x=sizes, y=run_times, color='#e31a1c', s=50, label='Data Points')
+        # sns.scatterplot(x=sizes, y=run_times, color='#e31a1c', s=50, label='Data Points')
         plt.title(f'Size vs. Run Time for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
         plt.xlabel('Matrix Size', fontsize=14)
         plt.ylabel('Run Time (seconds)', fontsize=14)
