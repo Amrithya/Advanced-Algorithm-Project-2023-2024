@@ -19,9 +19,21 @@ To apply the Ant Colony Algorithm, import the module and provide the necessary d
 
 ```python
 from ant_colony_algorithm_no_constraint import ant_colony_algorithm
+from ant_colony_approach.ant_colony_algorithm_with_constraint import ant_colony_optimization
+
+# Example data
+matrix = [[...]]
+K=1, L=1
+# Execute the algorithm without constraint
+result = ant_colony_algorithm(matrix)
+
+# Execute the algorithm with constraint
+result = ant_colony_optimization(matrix, K, L)
 
 # Example graph or network data
 graph_data = [...]
 
 # Run the algorithm
 path = ant_colony_algorithm(graph_data)
+path = ant_colony_optimization(graph_data)
+
