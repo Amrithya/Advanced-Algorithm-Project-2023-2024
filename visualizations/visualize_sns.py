@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import numpy as np
+import pandas as pd
 
 def create_test_result_plots(test_results, algorithm_name):
     constraints = test_results['constraints']
@@ -20,56 +21,89 @@ def create_test_result_plots(test_results, algorithm_name):
     # Bar Chart for Successes, Failures, and Skipped
     labels = ['Successes', 'Failures', 'Skipped']
     counts = [test_results['successes'], test_results['failures'], test_results['skipped']]
+    colors = ['#28a745', '#dc3545', '#ffc107']  # Green, Red, Yellow
+
     plt.figure(figsize=(10, 6))
-    sns.barplot(x=labels, y=counts, palette=['#66c2a5', '#fc8d62', '#8da0cb'])
-    for i, count in enumerate(counts):
-        plt.text(i, count, str(count), ha='center', va='bottom', fontsize=12, fontweight='bold', color='black')
-    plt.title(f'Test Results for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
-    plt.xlabel('Test Result', fontsize=14)
-    plt.ylabel('Number of Test Cases', fontsize=14)
+    sns.barplot(y=labels, x=counts, palette=colors, orient='h')
+
+    plt.title(f'Test Results for {algorithm_name} {msg}', fontsize=18, fontweight='bold')
+    plt.ylabel('Test Result', fontsize=16)
+    plt.xlabel('Number of Test Cases', fontsize=16)
+
+    # Adding custom data labels
+    for index, value in enumerate(counts):
+        plt.text(value, index, f' {value}', color='black', fontweight='bold', va='center')
+
+    # Setting a stylish background
+    sns.set_style("whitegrid")
+
+    # Adding grid lines for better readability
+    plt.grid(axis='x', linestyle='--')
+
     plt.show()
 
-    # Percentage Pie Chart
+
+
+    # Improved Percentage Donut Chart
     labels = ['Successes', 'Failures']
     sizes = [test_results['successes'], test_results['failures']]
+    colors = ['#28a745', '#dc3545']  # Green for Successes, Red for Failures
+
     plt.figure(figsize=(8, 8))
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', colors=['#66ff66', '#ff6666'], startangle=90, explode=(0.1, 0))
-    plt.title(f'Test Results Percentage for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
-    plt.legend(loc="upper right", bbox_to_anchor=(1, 0, 0.5, 1), fontsize=12)
+    # Creating a donut chart
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140, colors=colors, wedgeprops=dict(width=0.3), explode=(0.1, 0))
+
+    plt.title(f'Test Results Percentage for {algorithm_name} {msg}', fontsize=18, fontweight='bold')
+
+    # Adding a central label
+    total = sum(sizes)
+    plt.text(0, 0, f'Total\n{total}', ha='center', va='center', fontsize=14, color='black', fontweight='bold')
+
+    # Improved legend positioning and styling
+    plt.legend(loc="best", fontsize=12, title='Test Results', title_fontsize='13', bbox_to_anchor=(1, 0.5))
+
     plt.show()
 
-    # Line plot for Size vs. Run Time
+
+    # Function to calculate trend line
+    def calculate_trend_line(x, y):
+        z = np.polyfit(x, y, 1)  # Fit a first degree polynomial (linear)
+        p = np.poly1d(z)  # Return the polynomial function
+        return p, z
+
+    # Function to plot Size vs. Run Time
+    def plot_size_vs_run_time(sizes, run_times, xlabel):
+        plt.figure(figsize=(10, 6))
+        base_color = '#1f78b4'  # Base color
+
+        # Creating a line plot
+        sns.lineplot(x=sizes, y=run_times, marker='o', color=base_color, alpha=0.7, label='Run Time')
+
+        # Calculating and adding trend line
+        trend_line, coeffs = calculate_trend_line(sizes, run_times)
+        plt.plot(sizes, trend_line(sizes), linestyle="--", color='darkblue', label='Trend Line')
+
+        # Displaying the equation of the trend line
+        equation_text = f'y = {coeffs[0]:.2f}x + {coeffs[1]:.2f}'
+        plt.text(sizes[-1], trend_line(sizes)[-1], equation_text, fontsize=12, color='darkblue', verticalalignment='bottom')
+
+        plt.title(f'Size vs. Run Time for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
+        plt.xlabel(xlabel, fontsize=14)
+        plt.ylabel('Run Time (seconds)', fontsize=14)
+        plt.legend(fontsize=12)
+        plt.show()
+
+    # Example usage
     if constraints and constraints_type == 'variable':
         k_values, l_values = zip(*constraints)
         constraints_size = [k * l for k, l in zip(k_values, l_values)]
         run_times = [run_time for run_time, _ in size_run_time_test]
-        plt.figure(figsize=(10, 6))
-        sns.lineplot(x=constraints_size, y=run_times, marker='o', color='#1f78b4', alpha=0.7, label='Run Time')
-        # sns.scatterplot(x=constraints_size, y=run_times, color='#e31a1c', s=50, label='Data Points')
-        plt.title(f'Size vs. Run Time for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
-        plt.xlabel('Constraints Size (k * l)', fontsize=14)
-        plt.ylabel('Run Time (seconds)', fontsize=14)
-        plt.legend(fontsize=12)
-        plt.show()
+        plot_size_vs_run_time(constraints_size, run_times, 'Constraints Size (k * l)')
     else:
         sizes = [size for _, size in size_run_time_test]
         run_times = [run_time for run_time, _ in size_run_time_test]
-        plt.figure(figsize=(10, 6))
-        sns.lineplot(x=sizes, y=run_times, marker='o', color='#1f78b4', alpha=0.7, label='Run Time')
-        # sns.scatterplot(x=sizes, y=run_times, color='#e31a1c', s=50, label='Data Points')
-        plt.title(f'Size vs. Run Time for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
-        plt.xlabel('Matrix Size', fontsize=14)
-        plt.ylabel('Run Time (seconds)', fontsize=14)
-        plt.legend(fontsize=12)
-        plt.show()
+        plot_size_vs_run_time(sizes, run_times, 'Matrix Size')
 
-    # Histogram for Run Times
-    plt.figure(figsize=(10, 6))
-    sns.histplot([run_time for run_time, _ in size_run_time_test], bins=20, color='#1f78b4', edgecolor='black')
-    plt.title(f'Distribution of Run Times for {algorithm_name} {msg}', fontsize=16, fontweight='bold')
-    plt.xlabel('Run Time (seconds)', fontsize=14)
-    plt.ylabel('Frequency', fontsize=14)
-    plt.show()
 
     # # Box Plot for Run Times
     # plt.figure(figsize=(10, 6))
