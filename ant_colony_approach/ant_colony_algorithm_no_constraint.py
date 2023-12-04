@@ -1,71 +1,51 @@
-import numpy as np  # Importing the numpy library as 'np' for efficient numerical operations.
-import random  # Importing the 'random' module to generate random numbers.
-import time  # Importing the 'time' module to measure execution time.
-import matplotlib.pyplot as plt  # Importing the 'matplotlib.pyplot' module for data visualization.
+import random
 
+def calculate_subarray_sum(matrix, i1, i2, j1, j2):
+    sum = 0
+    for i in range(i1, i2 + 1):
+        for j in range(j1, j2 + 1):
+            sum += matrix[i][j]
+    return sum
 
-# Ant Colony Optimization
-def ant_colony_algorithm(matrix, num_ants=10, num_iterations=100):
-    """
-    Ant Colony Optimization algorithm to find the maximum segment sum in a 2D matrix.
+def ant_colony_algorithm(matrix, num_ants=200, num_iterations=400, evaporation_rate=0.1):
+    rows, cols = len(matrix), len(matrix[0]) if matrix else 0
+    pheromone_matrix = initialize_pheromone_matrix(rows, cols)
 
-    Parameters:
-    - matrix (numpy.ndarray): The 2D matrix for which the maximum segment sum is to be found.
-    - num_ants (int): The number of ants used in the algorithm.
-    - num_iterations (int): The number of iterations to perform.
-
-    Returns:
-    - tuple: A tuple representing the best solution found, i.e., (i1, i2, j1, j2).
-    """
-    # Time Complexity: O(num_ants * num_iterations * solution_evaluation_time)
-    # Space Complexity: O(1) (constant space for storing best_solution and best_score)
-    # Quality: The quality of the result heavily depends on the randomness of ant movements. May not always find the global optimum.
-    # Running Time: Depends on the value of num_ants and num_iterations; typically slower than genetic algorithms.
-
-    best_solution = generate_solution(matrix)
-    best_score = evaluate_solution(best_solution, matrix)
+    best_solution = None
+    max_sum = float('-inf')
 
     for _ in range(num_iterations):
+        solutions = []
         for _ in range(num_ants):
-            new_solution = generate_solution(matrix)
-            new_score = evaluate_solution(new_solution, matrix)
+            solution = generate_random_solution(rows, cols)
+            current_sum = calculate_subarray_sum(matrix, *solution)
+            solutions.append((solution, current_sum))
 
-            if new_score > best_score:
-                best_solution = new_solution
-                best_score = new_score
+            if current_sum > max_sum:
+                best_solution, max_sum = solution, current_sum
 
-    return best_solution
+        update_pheromone_matrix(pheromone_matrix, solutions, evaporation_rate)
 
-# Function to generate an initial solution (random submatrix)
-def generate_solution(matrix):
-    """
-    Generate a random solution (submatrix indices) for the given matrix.
+    top_left = (best_solution[0], best_solution[2])
+    bottom_right = (best_solution[1], best_solution[3])
+    return max_sum, top_left, bottom_right
 
-    Parameters:
-    - matrix (numpy.ndarray): The 2D matrix.
+def initialize_pheromone_matrix(rows, cols):
+    return [[1 for _ in range(cols)] for _ in range(rows)]
 
-    Returns:
-    - tuple: A tuple representing the random solution (i1, i2, j1, j2).
-    """
-    rows, cols = matrix.shape
-    i1 = random.randint(0, rows - 1)
-    i2 = random.randint(i1, rows - 1)
-    j1 = random.randint(0, cols - 1)
-    j2 = random.randint(j1, cols - 1)
-    return i1, i2, j1, j2
+def generate_random_solution(rows, cols):
+    i1, j1 = random.randint(0, rows-1), random.randint(0, cols-1)
+    i2, j2 = random.randint(i1, rows-1), random.randint(j1, cols-1)
+    return (i1, i2, j1, j2)
 
-# Function to evaluate a solution (sum of elements in the submatrix)
-def evaluate_solution(solution, matrix):
-    """
-    Evaluate the sum of elements in the submatrix defined by the given solution.
+def update_pheromone_matrix(pheromone_matrix, solutions, evaporation_rate):
+    for i in range(len(pheromone_matrix)):
+        for j in range(len(pheromone_matrix[0])):
+            pheromone_matrix[i][j] *= (1 - evaporation_rate)
 
-    Parameters:
-    - solution (tuple): A tuple representing the solution (i1, i2, j1, j2).
-    - matrix (numpy.ndarray): The 2D matrix.
+    for solution, score in solutions:
+        i1, i2, j1, j2 = solution
+        for i in range(i1, i2 + 1):
+            for j in range(j1, j2 + 1):
+                pheromone_matrix[i][j] += score
 
-    Returns:
-    - int: The sum of elements in the submatrix.
-    """
-    i1, i2, j1, j2 = solution
-    submatrix = matrix[i1:i2 + 1, j1:j2 + 1]
-    return np.sum(submatrix)
