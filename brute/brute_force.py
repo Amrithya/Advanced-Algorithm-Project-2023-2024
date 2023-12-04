@@ -1,7 +1,24 @@
 
 from brute.helpers import calculate_subarray_sum,print_submatrix
 
+
 def brute_force_non_constrained(matrix):
+    """
+    this function involves fixing a top left corner calculating the sum of every possible sub-array for this fixed
+    corner, and then determining which one has the highest sum. This approach is exhaustive and
+    considers all potential sub-arrays within the matrix
+    
+    Args:
+    matrix : A 2D array (list) of numbers. 
+
+    Returns:
+    tuple: A tuple containing:
+           - The first element is the maximum subarray sum (int).
+           - The second element is a tuple of the start row and column indices (int, int) of the subarray.
+           - The third element is a tuple of the end row and column indices (int, int) of the subarray.
+    """
+
+
     # Get the number of rows and columns in the matrix
     rows = len(matrix)
     cols =  len(matrix[0])  if rows>0 else 0 
@@ -26,6 +43,22 @@ def brute_force_non_constrained(matrix):
 
 
 # BRUTE FORCE CONSTRAINED
+"""
+    this function is similar to the unconstrained version but with an additional
+    check before calculating the sum for if the constraints (k and l) rows and columns
+    respectively are withing the boundaries
+    
+    Args:
+    matrix : A 2D array (list) of numbers. 
+    k : (int) number of rows constraints
+    l : (int) number of columns constraints
+
+    Returns:
+    tuple: A tuple containing:
+           - The first element is the maximum subarray sum (int).
+           - The second element is a tuple of the start row and column indices (int, int) of the subarray.
+           - The third element is a tuple of the end row and column indices (int, int) of the subarray.
+    """
 
 def brute_force_constrained(matrix,K,L):
     rows, cols = len(matrix), len(matrix[0])

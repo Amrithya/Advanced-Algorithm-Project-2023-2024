@@ -62,8 +62,8 @@ def max_segment_branch_and_bound_constrained(matrix, k, l):
     q = deque()
     q.append(initial_indices)
 
-    n = 4
-    for i in range (n):
+    n_iter = 4
+    for i in range (n_iter):
         while q:
             node = q.popleft()
             for child in generate_children(node, m, n):

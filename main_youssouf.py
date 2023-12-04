@@ -1,124 +1,175 @@
-import random
-import sys
 import os
 import random
-import sys
-import os
 import time
-import numpy as np
-
-# sys.path
-project_directory = 'C:/Users/youss/OneDrive/Bureau/Adavance Algorithm/Advanced-Algorithm-Project-2023-2024'
-sys.path.append(project_directory)
-
-
+import matplotlib.pyplot as plt
 from genetic_algorithm.genetic_algorithm_no_constraint import max_segment_2d_genetic
 from genetic_algorithm.genetic_algorithm_with_constraint import genetic_algorithm as genetic_algorithm_constrained
+from ant_colony_approach.ant_colony_algorithm_no_constraint import ant_colony_algorithm
+from ant_colony_approach.ant_colony_algorithm_with_constraint import ant_colony_optimization
+from ant_colony_approach.ant_colony_algorithm_with_constraint import ant_colony_optimization
+random.seed(42)  # Set a random seed for reproducibility
 
-from genetic_algorithm.genetic_algorithm_no_constraint import evaluate_solution
-
-from ant_colony_approach.ant_colony_algorithm_no_constraint import  ant_colony_algorithm
-from ant_colony_approach.ant_colony_algorithm_with_constraint import  ant_colony_optimization
-
-
-# Function to generate a random matrix as a NumPy array
+      
+# Define your project directory
+project_directory = 'C:/Users/youss/OneDrive/Bureau/Adavance Algorithm/Advanced-Algorithm-Project-2023-2024'
+# Define functions for matrix generation, saving, and reading
 def generate_matrix(rows, cols, value_range):
-    return np.random.randint(value_range[0], value_range[1], (rows, cols))
+    return [[random.randint(value_range[0], value_range[1]) for _ in range(cols)] for _ in range(rows)]
 
-# Function to save a matrix to a file
 def save_matrix_to_file(matrix, file_path):
     with open(file_path, 'w') as file:
         for row in matrix:
-            line = ' '.join(str(val) for val in row)
-            file.write(line + '\n')
+            file.write(' '.join(map(str, row)) + '\n')
 
-# Function to read a matrix from a file
 def read_matrix_from_file(file_path):
     matrix = []
     with open(file_path, 'r') as file:
         for line in file:
-            row = [int(val) for val in line.split()]
+            row = list(map(int, line.split()))
             matrix.append(row)
     return matrix
 
-# Add the path of the 'genetic_algorithm' folder's parent directory to sys.path
-project_directory = 'C:/Users/youss/OneDrive/Bureau/Adavance Algorithm/Advanced-Algorithm-Project-2023-2024'
-sys.path.append(project_directory)
+# Define the complexity calculation function
+def calculate_complexity(matrix_size, algorithm_type, P_G=None, A_I=None, K=None, L=None):
+    if algorithm_type == "genetic_no_constraint":
+        P, G = P_G if P_G else (100, 50)  # Default values or use provided values
+        return P * G * matrix_size ** 2  # O(P × G × N^2)
+    elif algorithm_type == "ant_colony_no_constraint":
+        A, I = A_I if A_I else (200, 100)  # Default values or use provided values
+        return A * I * matrix_size ** 2  # O(A × I × N^2)
+    elif algorithm_type == "genetic_constrained" or algorithm_type == "ant_colony_constrained":
+        P = G = A = I = 100  # Placeholder values for population size and generations/iterations
+        return P * G * K * L if algorithm_type.startswith("genetic") else A * I * K * L  # O(P × G × K × L) or O(A × I × K × L)
+    return 0
 
-
+# Main function
 def main():
+    # Define your project directory
+    project_directory = 'C:/Users/youss/OneDrive/Bureau/Adavance Algorithm/Advanced-Algorithm-Project-2023-2024/Plot genetic_ant_algorithm'
 
-    # Generate different matrices
-    low_dimensional_matrix = generate_matrix(3, 3, (-10, 10))
-    large_scale_matrix = generate_matrix(50, 50, (-25, 25))
-    grand_scale_matrix = generate_matrix(100, 100, (-50, 50))
+    matrices = {
+        'small_matrix': generate_matrix(5, 5, (-10, 10)),
+        'medium_matrix': generate_matrix(10, 10, (-20, 20)),
+        'large_matrix': generate_matrix(20, 20, (-50, 50))
+    }
 
-    # File paths for each matrix
-    low_dim_path = os.path.join(project_directory, 'genetic_algorithm/low_dimensional.txt')
-    large_scale_path = os.path.join(project_directory, 'genetic_algorithm/large_scale.txt')
-    grand_scale_path = os.path.join(project_directory, 'genetic_algorithm/grand_scale.txt')
+    times_no_constraint = []
+    times_constrained = []
+    times_ant_colony_no_constraint=[]
+    times_ant_colony_constrained=[]
+    complexities_no_constraint = []
+    complexities_constrained = []
+    complexities_ant_colony_no_constraint=[]
+    complexities_ant_colony_constrained=[]
+   
+    for matrix_label, matrix in matrices.items():
+        K, L = 3, 3  # Example values for constrained algorithms
 
-    # Save each matrix to its respective file
-    save_matrix_to_file(low_dimensional_matrix, low_dim_path)
-    save_matrix_to_file(large_scale_matrix, large_scale_path)
-    save_matrix_to_file(grand_scale_matrix, grand_scale_path)
+        file_path = os.path.join(project_directory, f"{matrix_label}.txt")
+        save_matrix_to_file(matrix, file_path)
+        matrix_from_file = read_matrix_from_file(file_path)
 
-    # Read and test each matrix from its file
-    matrix_ld = read_matrix_from_file(low_dim_path)
-    matrix_ls = read_matrix_from_file(large_scale_path)
-    matrix_gs = read_matrix_from_file(grand_scale_path)
+        # Genetic Algorithm (No Constraint)
+        start_time = time.time()
+        result_no_constraint = max_segment_2d_genetic(matrix_from_file)
+        times_no_constraint.append(time.time() - start_time)
+        complexities_no_constraint.append(calculate_complexity(len(matrix), "genetic_no_constraint"))
 
+        # Genetic Algorithm (Constrained)
+        start_time = time.time()
+        result_constrained = genetic_algorithm_constrained(matrix_from_file, K, L)
+        times_constrained.append(time.time() - start_time)
+        complexities_constrained.append(calculate_complexity(len(matrix), "genetic_constrained", K=K, L=L))
+
+        # Ant Colony Algorithm (No Constraint)
+        start_time = time.time()
+        ant_colony_result_no_constraint = ant_colony_algorithm(matrix_from_file)
+        times_ant_colony_no_constraint.append(time.time() - start_time)
+        complexities_ant_colony_no_constraint.append(calculate_complexity(len(matrix), "ant_colony_no_constraint"))
+
+        # Ant Colony Algorithm (Constrained)
+        start_time = time.time()
+        ant_colony_result_constrained = ant_colony_optimization(matrix_from_file, K, L)
+        times_ant_colony_constrained.append(time.time() - start_time)
+        complexities_ant_colony_constrained.append(calculate_complexity(len(matrix), "ant_colony_constrained", K=K, L=L))
+        
+        # Print results for Genetic Algorithm
+        print(f"Results for {matrix_label}:")
+        print(f"Genetic Algorithm (No Constraint): {result_no_constraint}, Time: {times_no_constraint[-1]}")
+        print(f"Genetic Algorithm (Constrained): {result_constrained}, Time: {times_constrained[-1]}")
+        # Print results for Ant Colony Algorithm
+        print(f"Ant Colony (No Constraint): {ant_colony_result_no_constraint}, Time: {times_ant_colony_no_constraint[-1]}")
+        print(f"Ant Colony (Constrained): {ant_colony_result_constrained}, Time: {times_ant_colony_constrained[-1]}")
 
    
-    K, L = 2, 2  # Dimensions du sous-tableau à chercher
-    # Print the matrix
-    print("Matrix_ld:")
-    for row in matrix_ld:
-        print(row)
-    print("K:", K,"L:", L)
+    # Plotting execution times
+    matrix_sizes = ['Small', 'Medium', 'Large']
+    plt.figure(figsize=(10, 6))
+    plt.plot(matrix_sizes, times_no_constraint, label='Genetic Algorithm No Constraint', marker='o')
+    plt.plot(matrix_sizes, times_constrained, label='Genetic Algorithm Constrained', marker='o')
+    plt.plot(matrix_sizes, times_ant_colony_no_constraint, label='Ant Colony No Constraint', marker='o')
+    plt.plot(matrix_sizes, times_ant_colony_constrained, label='Ant Colony Constrained', marker='o')
+    plt.title("Execution Times of Algorithms on Different Matrix Sizes")
+    plt.xlabel('Matrix Size')
+    plt.ylabel('Execution Time (Seconds)')
+    plt.legend()
+    plt.savefig(os.path.join(project_directory, "execution_times_comparison.png"))
+    plt.show()
 
-    # Execute the Genetic Algorithm without constraint
-    # Convert the list to a numpy array
-    numpy_matrix = np.array(matrix_ld)
+    # Plotting complexities
+    plt.figure(figsize=(10, 6))
+    plt.plot(matrix_sizes, complexities_no_constraint, label='Genetic Algorithm No Constraint', marker='x')
+    plt.plot(matrix_sizes, complexities_constrained, label='Genetic Algorithm Constrained', marker='x')
 
-    # Apply the genetic algorithm
-    start_time = time.time()
-    result = max_segment_2d_genetic(numpy_matrix, population_size=100, num_generations=100)
-    end_time = time.time()
-
-    # Display the matrix and the result
-    print("Matrix:")
-    print(numpy_matrix)
-    print("\nIndices of the maximal sub-matrix: ", result)
-
-    i1, i2, j1, j2 = result
-    submatrix_sum = evaluate_solution(result, numpy_matrix)
-    print("Sum of the maximal sub-matrix Genetic Algorithm without constraint:", submatrix_sum)
-    print("Maximal sub-matrix Genetic Algorithm without constraint:\n", numpy_matrix[i1:i2 + 1, j1:j2 + 1])
-    print("\nTemps d'exécution Genetic Algorithm without constraint:", end_time - start_time, "secondes")
-    # result_gen, top_left_gen, bottom_right_gen = max_segment_2d_genetic (matrix)
-    # print("Genetic Algorithm:", result_gen, top_left_gen, bottom_right_gen)
-
-    # Execute the Genetic Algorithm with constraint
-    result_gen_constrained, top_left_gen_constrained, bottom_right_gen_constrained = genetic_algorithm_constrained(matrix_ld, K, L,100,50, 10)
-    print("Genetic Algorithm with Constraint:", result_gen_constrained, top_left_gen_constrained, bottom_right_gen_constrained)
-
-    # Execute the Ant Colony Algorithm without constraint
-    result_ant_colony = ant_colony_algorithm(numpy_matrix)
-    print("Ant Colony Algorithm without:", result_ant_colony)
-
-    # Execute the Ant Colony Algorithm with constraint
-    num_ants = 10
-    num_iterations = 100
-    evaporation_rate = 0.5
-
-    result, top_left, bottom_right = ant_colony_optimization(matrix_ld, K, L, num_ants, num_iterations, evaporation_rate)
-    print("Maximum Subarray Sum:", result)
-    print("Top Left Index of Subarray:", top_left)
-    print("Bottom Right Index of Subarray:", bottom_right)
+    plt.plot(matrix_sizes, complexities_ant_colony_no_constraint, label='Ant Colony No Constraint', marker='x')
+    plt.plot(matrix_sizes, complexities_ant_colony_constrained, label='Ant Colony Constrained', marker='x')
  
-    result_ant_colony_opt = ant_colony_optimization(matrix_ld, K, L, num_ants, num_iterations, evaporation_rate)
-    print("Ant Colony Optimization with Constraint:", result_ant_colony_opt)
+    plt.title("Algorithm Complexities on Different Matrix Sizes")
+    plt.xlabel('Matrix Size')
+    plt.ylabel('Complexity')
+    plt.legend()
+    plt.savefig(os.path.join(project_directory, "complexities_comparison.png"))
+    plt.show()
+ # Define the list of algorithms
+    algorithms = ['Genetic No Constraint', 'Genetic Constrained', 
+                  'Ant Colony No Constraint', 'Ant Colony Constrained']
+
+    for algorithm in algorithms:
+        # Corrected data extraction logic for each algorithm
+        if algorithm == 'Genetic No Constraint':
+            execution_times = times_no_constraint
+            complexities = complexities_no_constraint
+        elif algorithm == 'Genetic Constrained':
+            execution_times = times_constrained
+            complexities = complexities_constrained
+        elif algorithm == 'Ant Colony No Constraint':
+            execution_times = times_ant_colony_no_constraint
+            complexities = complexities_ant_colony_no_constraint
+        elif algorithm == 'Ant Colony Constrained':
+            execution_times = times_ant_colony_constrained
+            complexities = complexities_ant_colony_constrained
+
+        # Plotting execution times for each algorithm
+        plt.figure(figsize=(10, 6))
+        plt.plot(matrix_sizes, execution_times, label=f'Execution Times - {algorithm}', marker='o')
+        plt.title(f"Execution Times for {algorithm}")
+        plt.xlabel('Matrix Size')
+        plt.ylabel('Execution Time (Seconds)')
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(os.path.join(project_directory, f"execution_time_{algorithm.replace(' ', '_').lower()}.png"))
+        plt.close()
+
+        # Plotting complexities for each algorithm
+        plt.figure(figsize=(10, 6))
+        plt.plot(matrix_sizes, complexities, label=f'Complexities - {algorithm}', marker='x')
+        plt.title(f"Algorithm Complexities for {algorithm}")
+        plt.xlabel('Matrix Size')
+        plt.ylabel('Complexity')
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(os.path.join(project_directory, f"complexity_{algorithm.replace(' ', '_').lower()}.png"))
+        plt.close()
 
 
 if __name__ == "__main__":
