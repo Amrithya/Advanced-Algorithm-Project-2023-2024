@@ -46,6 +46,7 @@ max_sum, top_left, bottom_right = maxMatrixSum_constraint(matrix, K, L)
 
 ## 2. Usage 
 
+The functions are imported in the main_dynamic which is used to call these functions and is used of visualizations and comparsion between various algorithms
 ```python
 from dynamic_programming.dynamic_programming import maxMatrixSum_non_constraint,maxMatrixSum_constraint
 from test_class.test_algorithm import TestAlgorithm
