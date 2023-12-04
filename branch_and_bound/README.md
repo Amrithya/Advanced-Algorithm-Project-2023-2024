@@ -1,23 +1,26 @@
 # Advanced-Algorithm-Project-2023-2024
 This repository is dedicated to solving the Matrix Maximum Segment Problem in a 2-dimensional scenario, commonly known as the Maximum Subarray Problem. Our primary objective is to implement various algorithms for this task and provide a comprehensive experimental analysis of their runtime performance and the quality of results. Explore this repository to access the code, documentation, and data related to our research and implementations.
 
+Introduction:
+This section implements algorithms for the maximum sub matrix problem using the branch and bound approach. The approach is implemented with two different implementatiions. All the algorithms outputs the maximum sum and tuple containg the indices of the submatix with maximum sum.
 
-Algorithm:
+For the noth the implementations have the same inputs and outputs.
 
-Input: matrix A
+Non Constrained :
 
-Output: values i1, i2, j1, j2 such that the submatrix A[i1 to i2, j1 to j2] have the maximum sum
-    
-1. intialize indices to [0, number of rows, 0, number of columns] sum to sum of the whole matrix and positive_sum to be the sum of all positive elements of the matrix
-2. add the indices of the matrix, sum of the elements and positive sum of the matrix 
-3. while the queue is non empty:
+    max_sum, (i1, j1), (i1, j2) = max_segment_branch_and_bound(matrix)
 
-        retrieve the last element of the queue and delete it from the queue
-        generate all possible sub arrays of that element
-        for subarray in all sub arrays of the element:
-            if positive sum(subarray) > sum:
-               add the subarray to the queue
-               if sum(subarray) > sum:
-                update sum to sum of sum(subrray) and the indices to the indices of the subarray.
-            
-7. return(sum, indices of the max sub array)
+Input : matrix - A 2D array or nested list
+
+Output : maximum sum, indices of the first element of the submatrix as a tuple, indices of the last element of the submatrix as a tuple.
+
+Constrained :
+
+    max_sum, (i1, j1), (i1, j2) = max_segment_branch_and_bound_constrained(matrix, k, l)
+
+Input : matrix - A 2D array or nested list, the constrains on the rows and columns, k and l respectively.
+
+Output : maximum sum, indices of the first element of the submatrix as a tuple, indices of the last element of the submatrix as a tuple.
+
+The constrained version is done only for the second implementation and not the first.
+

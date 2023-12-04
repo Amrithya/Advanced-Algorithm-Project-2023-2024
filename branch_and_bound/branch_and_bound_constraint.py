@@ -11,30 +11,36 @@ import numpy as np
 from collections import deque
 
 def positive_sum(matrix):
-    s= 0
+    # Helper function to calculate the sum of positive elements in the matrix
+    s = 0
     for row in matrix:
         for i in row:
             if i > 0:
                 s += i
-
     return s
 
-
 def max_segment_branch_and_bound_constraint(matrix, k, l):
-    m = matrix.shape[0]
-    n = matrix.shape[1]
+    # Convert the input matrix to a NumPy array
+    matrix = np.array(matrix)
+    m = matrix.shape[0]  # Number of rows
+    n = matrix.shape[1]  # Number of columns
 
+    # Initial partial solution and its positive sum
     initial_partial = ((0, m-1, 0, n-1), np.sum(matrix))
 
+    # Initial best positive sum
     initial_best = positive_sum(matrix)
 
     def valid(i1, i2, j1, j2):
+        # Helper function to check if the indices are within bounds
         return i1 <= i2 and j1 <= j2 and i1 >= 0 and i2 < m and j1 >= 0 and j2 < n
 
     def matrix_sub_sum(i1, i2, j1, j2):
+        # Helper function to calculate the sum of elements in a submatrix
         return np.sum(matrix[i1:i2+1, j1:j2+1])
 
     def positive_sub_sum(i1, i2, j1, j2):
+        # Helper function to calculate the sum of positive elements in a submatrix
         s = 0
         for i in range(i1, i2+1):
             for j in range(j1, j2+1):
@@ -43,6 +49,7 @@ def max_segment_branch_and_bound_constraint(matrix, k, l):
         return s
 
     def generate_children(partial, best):
+        # Helper function to generate children of the current partial solution
         i1, i2, j1, j2 = partial[0]
         children = []
 
@@ -50,30 +57,36 @@ def max_segment_branch_and_bound_constraint(matrix, k, l):
             children.append((i1+1, i2, j1, j2))
         if valid(i1, i2-1, j1, j2):
             children.append((i1, i2-1, j1, j2))
-
         if valid(i1, i2, j1+1, j2):
             children.append((i1, i2, j1+1, j2))
-
         if valid(i1, i2, j1, j2-1):
             children.append((i1, i2, j1, j2-1))
         return children
 
+    # Initialize a deque with the initial partial solution and its best positive sum
     q = deque([(initial_partial, initial_best)])
-    d = {initial_partial[0]:(initial_partial[1], initial_best)}
 
+    # Initialize a dictionary to store computed values for each partial solution
+    d = {initial_partial[0]: (initial_partial[1], initial_best)}
+
+    # BFS to explore all possible solutions
     while q:
         current_partial, current_best = q.popleft()
 
         for child in generate_children(current_partial, current_best):
             if child not in d.keys():
+                # Calculate the total and positive sums for the child
                 a = matrix_sub_sum(*child)
                 b = positive_sub_sum(*child)
                 d[child] = (a, b)
+
             if d[child][1] > initial_partial[1]:
-                q.append(((child, d[child][0]), d[child][1] ))
-                if d[child][0]  > initial_partial[1] and (child[1] - child[0] + 1 == k) and (child[3] - child[2] + 1 == l):
+                # Add the child to the queue if its positive sum is greater than the initial best
+                q.append(((child, d[child][0]), d[child][1]))
+
+                if d[child][0] > initial_partial[1] and (child[1] - child[0] + 1 == k) and (child[3] - child[2] + 1 == l):
+                    # Update the initial partial solution if the total sum is greater and satisfies constraints
                     initial_partial = (child, d[child][0])
 
-
-    return initial_partial[1] , (initial_partial[0][0], initial_partial[0][2]) ,(initial_partial[0][1],initial_partial[0][3])
-
+    # Extract the final results
+    return initial_partial[1], (initial_partial[0][0], initial_partial[0][2]), (initial_partial[0][1], initial_partial[0][3])
