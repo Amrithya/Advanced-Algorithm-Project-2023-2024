@@ -18,9 +18,13 @@ To use these algorithms, import the desired module and pass the matrix data as i
 
 ```python
 from genetic_algorithm_no_constraint import max_segment_2d_genetic
+from genetic_algorithm.genetic_algorithm_with_constraint import genetic_algorithm as genetic_algorithm_constrained
 
 # Example data
 matrix = [[...]]
+K=1, L=1
 
-# Execute the algorithm
+# Execute the algorithm without constraint
 result = max_segment_2d_genetic(matrix)
+# Execute the algorithm with constraint
+result = genetic_algorithm_constrained(matrix,K,L)
