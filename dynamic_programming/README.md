@@ -25,7 +25,7 @@ max_sum, top_left, bottom_right = maxMatrixSum_non_constraint(matrix)
 
 4. bottom_right: Tuple containing the row and column indices of the bottom-right corner of the submatrix.
 
-### 1.2 'maxMatrixSum_constraint(matrix, K, L)'
+### 1.2 `maxMatrixSum_constraint(matrix, K, L)`
 This function takes a 2D matrix and two constraints, K and L, as input and returns a tuple containing the maximum submatrix sum and the indices of the corresponding submatrix with constraints.
 
 ```python
