@@ -11,6 +11,7 @@ Non Constrained :
     max_sum, (i1, j1), (i1, j2) = max_segment_branch_and_bound(matrix)
 
 Input : matrix - A 2D array or nested list
+
 Output : maximum sum, indices of the first element of the submatrix as a tuple, indices of the last element of the submatrix as a tuple.
 
 Constrained :
@@ -18,6 +19,7 @@ Constrained :
     max_sum, (i1, j1), (i1, j2) = max_segment_branch_and_bound_constrained(matrix, k, l)
 
 Input : matrix - A 2D array or nested list, the constrains on the rows and columns, k and l respectively.
+
 Output : maximum sum, indices of the first element of the submatrix as a tuple, indices of the last element of the submatrix as a tuple.
 
 The constrained version is done only for the second implementation and not the first.
